@@ -229,3 +229,76 @@ Example:
 
 - This endpoint is protected and requires user authentication.
 - The invalidated token is added to a blacklist to prevent reuse.
+
+
+## `POST /captains/register`
+
+Registers a new captain (driver) in the application.
+
+### Description
+
+Creates a new captain account by receiving captain registration data, including vehicle information. The endpoint validates the input, hashes the password, and returns an authentication token and captain information after successful registration.
+
+### Request Body
+
+- `email` (string, required) - A valid email address.
+- `fullname.firstname` (string, required) - The captain's first name.
+- `fullname.lastname` (string, required) - The captain's last name.
+- `password` (string, required) - A password with a minimum of 6 characters.
+- `vehicle.color` (string, required) - The color of the vehicle.
+- `vehicle.plate` (string, required) - The vehicle's license plate number.
+- `vehicle.capacity` (number, required) - The passenger capacity of the vehicle.
+- `vehicle.vehicleType` (string, required) - The type of vehicle (e.g., 'Sedan', 'SUV').
+
+### Response
+
+#### Success (201 Created)
+
+Returns a JSON object with the generated authentication token and the created captain's details.
+
+Example:
+
+```json
+{
+  "token": "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9...",
+  "captain": {
+    "_id": "60c72b2f4f1a2565f8b7d90e",
+    "fullname": {
+      "firstname": "Jane",
+      "lastname": "Doe"
+    },
+    "email": "jane.doe@example.com",
+    "vehicle": {
+      "color": "Black",
+      "plate": "XYZ-123",
+      "capacity": 4,
+      "vehicleType": "Sedan"
+    },
+    "socketId": null
+  }
+}
+```
+
+#### Validation errors (400 Bad Request)
+
+Returned when required fields are missing or inputs fail validation.
+
+Example:
+
+```json
+{
+  "errors": [
+    {
+      "msg": "Invalid email address",
+      "param": "email",
+      "location": "body"
+    }
+  ]
+}
+```
+
+### Notes
+
+- The endpoint requires nested objects for `fullname` and `vehicle`.
+- A JWT auth token is returned on successful registration.
+

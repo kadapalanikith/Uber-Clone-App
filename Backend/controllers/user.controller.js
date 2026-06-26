@@ -13,6 +13,12 @@ module.exports.registerUser = async (req, res, next) => {
 
     const { email, fullname, password } = req.body;
 
+    const isUserAlreadyExists = await userModel.findOne({ email });
+
+    if (isUserAlreadyExists) {
+        return res.status(400).json({ message: "User already exists" });
+    }
+
     const hashedPassword = await userModel.hashPassword(password);
 
     const user = await userService.createUser({ email, firstname: fullname.firstname, lastname: fullname.lastname, password: hashedPassword });
@@ -58,7 +64,7 @@ module.exports.getUserProfile = async (req, res, next) => {
 
 module.exports.logoutUser = async (req, res, next) => {
     res.clearCookie("token");
-    const token = req.cookies.token || req.header.authorization.split(" ")[1];
+    const token = req.cookies?.token || req.headers.authorization?.split(" ")[1];
 
     await blacklistTokenModel.create({ token });
 
