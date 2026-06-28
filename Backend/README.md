@@ -1,304 +1,130 @@
-# Backend API Documentation
+# Uber Clone App - Backend API
 
-## `POST /users/register`
+[![Node.js](https://img.shields.io/badge/Node.js-v16+-339933?logo=node.js&logoColor=white&style=flat-square)](https://nodejs.org/)
+[![Express.js](https://img.shields.io/badge/Express.js-5.2.1-000000?logo=express&logoColor=white&style=flat-square)](https://expressjs.com/)
+[![MongoDB](https://img.shields.io/badge/MongoDB-Mongoose-47A248?logo=mongodb&logoColor=white&style=flat-square)](https://www.mongodb.com/)
+[![JSON Web Tokens](https://img.shields.io/badge/JWT-Authentication-000000?logo=json-web-tokens&logoColor=white&style=flat-square)](https://jwt.io/)
 
-Registers a new user in the application.
+Welcome to the backend service of the **Uber Clone App**. This service is responsible for database persistence, business logic, user and captain authentication, and secure route protection.
 
-### Description
+---
 
-Creates a new user account by receiving user registration data. The endpoint validates the input, hashes the password, and returns an authentication token and user information after successful registration.
+## 🛠️ Tech Stack
 
-### Request Body
+- **Runtime:** [Node.js](https://nodejs.org/) (CommonJS modules)
+- **Framework:** [Express.js](https://expressjs.com/) (v5.2.1)
+- **Database:** [MongoDB](https://www.mongodb.com/) with [Mongoose ODM](https://mongoosejs.com/) (v9.7.1)
+- **Security & Auth:** [JSON Web Tokens (JWT)](https://jwt.io/), [bcrypt](https://github.com/kelektiv/node.bcrypt.js) password hashing, and [cookie-parser](https://github.com/expressjs/cookie-parser) for cookie-based token handling
+- **Validation:** [express-validator](https://express-validator.github.io/docs/) for robust request input validation
 
-- `email` (string, required) - a valid email address.
-- `fullname.firstname` (string, required) - user's first name, minimum 3 characters.
-- `fullname.lastname` (string, required) - user's last name, minimum 3 characters.
-- `password` (string, required) - password with minimum 6 characters.
+---
 
-### Response
+## 📂 Directory Structure
 
-#### Success (201 Created)
-
-Returns a JSON object with the generated authentication token and the created user.
-
-Example:
-
-```json
-{
-  "token": "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9...",
-  "user": {
-    "_id": "60c72b2f4f1a2565f8b7d90d",
-    "fullname": {
-      "firstname": "John",
-      "lastname": "Doe"
-    },
-    "email": "john.doe@example.com",
-    "socketId": null
-  }
-}
+```text
+Backend/
+├── controllers/          # Request handlers (User, Captain)
+├── db/                   # Database connection helper (`db.js`)
+├── middlewares/          # Authentication & route protection middleware
+├── models/               # Mongoose schemas (User, Captain, BlacklistToken)
+├── routes/               # Express route declarations
+│   ├── user.routes.js         # Routes for riders
+│   └── captain.routes.js      # Routes for drivers (captains)
+├── services/             # Core business logic (database creation helpers)
+├── .env                  # Environment configurations (local-only)
+├── app.js                # App configuration, CORS, parsers, and route registration
+├── package.json          # Dependencies and scripts
+└── server.js             # Application entry point (creates HTTP server)
 ```
 
-#### Validation errors (400 Bad Request)
+---
 
-Returned when required fields are missing or inputs fail validation.
+## 🔒 API Endpoints & Documentation
 
-Example:
+### 👤 Rider (User) Routes - `/users`
 
-```json
-{
-  "errors": [
-    {
-      "msg": "Invalid email address",
-      "param": "email",
-      "location": "body"
-    },
-    {
-      "msg": "First name must be at least 3 characters long",
-      "param": "fullname.firstname",
-      "location": "body"
-    }
-  ]
-}
+| HTTP Method | Endpoint | Auth Required | Description |
+| :--- | :--- | :---: | :--- |
+| `POST` | `/users/register` | No | Registers a new user/rider. Requires email, firstname, lastname, and password. |
+| `POST` | `/users/login` | No | Authenticates a user. Returns a JWT and sets an HTTP-only cookie. |
+| `GET` | `/users/profile` | **Yes** | Returns the authenticated user's profile. |
+| `POST` | `/users/logout` | **Yes** | Logs out the user and blacklists their current JWT token. |
+
+#### Request Validations (User Registration):
+- `email`: Must be a valid email address.
+- `fullname.firstname`: Minimum 3 characters.
+- `fullname.lastname`: Minimum 3 characters.
+- `password`: Minimum 6 characters.
+
+---
+
+### 🚕 Driver (Captain) Routes - `/captains`
+
+| HTTP Method | Endpoint | Auth Required | Description |
+| :--- | :--- | :---: | :--- |
+| `POST` | `/captains/register` | No | Registers a new captain/driver. Requires vehicle details. |
+| `POST` | `/captains/login` | No | Authenticates a captain. Returns a JWT and sets an HTTP-only cookie. |
+| `GET` | `/captains/profile` | **Yes** | Returns the authenticated captain's profile. |
+| `GET` | `/captains/logout` | **Yes** | Logs out the captain and clears the session. |
+
+#### Request Validations (Captain Registration):
+- `email`: Must be a valid email address.
+- `fullname.firstname` & `fullname.lastname`: Minimum 3 characters.
+- `password`: Minimum 6 characters.
+- `vehicle.color`: Minimum 3 characters.
+- `vehicle.plate`: Minimum 3 characters.
+- `vehicle.capacity`: Must be an integer.
+- `vehicle.vehicleType`: Must be one of `['car', 'motorcycle', 'auto']`.
+
+---
+
+## 🛡️ Authentication Middleware
+
+Route protection is handled via custom middleware in [auth.middleware.js](file:///d:/Uber%20Clone%20App/Backend/middlewares/auth.middleware.js):
+- **User Route Protection:** `authMiddleware.authUser` checks the incoming request headers (`Authorization: Bearer <token>`) or cookies (`token`) for a valid JWT, verifies it, checks if it's blacklisted, and injects the user object into `req.user`.
+- **Captain Route Protection:** `authMiddleware.authCaptain` performs similar checks specifically for driver accounts and injects the captain object into `req.captain`.
+
+---
+
+## 🔧 Getting Started
+
+### Prerequisites
+
+- [Node.js](https://nodejs.org/) (v16 or higher)
+- [MongoDB](https://www.mongodb.com/) (Local instance or MongoDB Atlas URI)
+
+### Installation
+
+1. Navigate to the backend directory:
+   ```bash
+   cd Backend
+   ```
+2. Install dependencies:
+   ```bash
+   npm install
+   ```
+
+### Configuration
+
+Create a `.env` file in the `Backend/` root directory and populate it with your configuration:
+
+```env
+PORT=3000
+MONGO_URI=mongodb://localhost:27017/uber-clone
+JWT_SECRET=your_jwt_secret_key
 ```
 
-### Notes
-
-- The endpoint requires `fullname.firstname` and `fullname.lastname` fields nested under `fullname`.
-- The password is hashed before saving.
-- A JWT auth token is returned on successful registration.
-
-## `POST /user/login`
-
-Authenticates a user and provides an authentication token.
-
-### Description
-
-Verifies user credentials (email and password) and, upon successful authentication, returns a JSON Web Token (JWT) and user details. This token can then be used to access protected routes.
-
-### Request Body
-
-- `email` (string, required) - The user's registered email address.
-- `password` (string, required) - The user's password.
-
-### Response
-
-#### Success (200 OK)
-
-Returns a JSON object containing the authentication token and the authenticated user's information.
-
-Example:
-
-```json
-{
-  "token": "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9...",
-  "user": {
-    "_id": "60c72b2f4f1a2565f8b7d90d",
-    "fullname": {
-      "firstname": "John",
-      "lastname": "Doe"
-    },
-    "email": "john.doe@example.com",
-    "socketId": null
-  }
-}
-```
-
-#### Authentication Failed (401 Unauthorized)
-
-Returned when the email or password is invalid.
-
-Example:
-
-```json
-{
-  "message": "Invalid email or password"
-}
-```
-
-#### Validation Errors (400 Bad Request)
-
-Returned when required fields are missing or inputs fail validation.
-
-Example:
-
-```json
-{
-  "errors": [
-    {
-      "msg": "Invalid email address",
-      "param": "email",
-      "location": "body"
-    }
-  ]
-}
-```
-
-### Notes
-
-- A JWT auth token is returned on successful login, which should be stored securely by the client and sent with subsequent requests for authenticated endpoints.
-
-## `GET /user/profile`
-
-Retrieves the profile information of the authenticated user.
-
-### Description
-
-This endpoint allows an authenticated user to fetch their own profile details. It requires a valid JWT to be provided in the request headers.
-
-### Request Headers
-
-- `Authorization` (string, required) - Bearer token. Example: `Bearer eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9...`
-
-### Response
-
-#### Success (200 OK)
-
-Returns a JSON object with the authenticated user's profile information.
-
-Example:
-
-```json
-{
-  "_id": "60c72b2f4f1a2565f8b7d90d",
-  "fullname": {
-    "firstname": "John",
-    "lastname": "Doe"
-  },
-  "email": "john.doe@example.com",
-  "socketId": null,
-  "createdAt": "2023-01-01T12:00:00.000Z",
-  "updatedAt": "2023-01-01T12:00:00.000Z"
-}
-```
-
-#### Authentication Failed (401 Unauthorized)
-
-Returned if no token is provided or if the token is invalid/expired.
-
-Example:
-
-```json
-{
-  "message": "Unauthorized: Access Denied"
-}
-```
-
-### Notes
-
-- This endpoint is protected and requires user authentication.
-
-## `POST /user/logout`
-
-Logs out the authenticated user by invalidating their JWT.
-
-### Description
-
-This endpoint allows an authenticated user to invalidate their current session's JWT. The provided token will be added to a blacklist, preventing its further use.
-
-### Request Headers
-
-- `Authorization` (string, required) - Bearer token. Example: `Bearer eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9...`
-
-### Response
-
-#### Success (200 OK)
-
-Returns a JSON object indicating successful logout.
-
-Example:
-
-```json
-{
-  "message": "User logged out successfully."
-}
-```
-
-#### Authentication Failed (401 Unauthorized)
-
-Returned if no token is provided or if the token is invalid/expired.
-
-Example:
-
-```json
-{
-  "message": "Unauthorized: Access Denied"
-}
-```
-
-### Notes
-
-- This endpoint is protected and requires user authentication.
-- The invalidated token is added to a blacklist to prevent reuse.
-
-
-## `POST /captains/register`
-
-Registers a new captain (driver) in the application.
-
-### Description
-
-Creates a new captain account by receiving captain registration data, including vehicle information. The endpoint validates the input, hashes the password, and returns an authentication token and captain information after successful registration.
-
-### Request Body
-
-- `email` (string, required) - A valid email address.
-- `fullname.firstname` (string, required) - The captain's first name.
-- `fullname.lastname` (string, required) - The captain's last name.
-- `password` (string, required) - A password with a minimum of 6 characters.
-- `vehicle.color` (string, required) - The color of the vehicle.
-- `vehicle.plate` (string, required) - The vehicle's license plate number.
-- `vehicle.capacity` (number, required) - The passenger capacity of the vehicle.
-- `vehicle.vehicleType` (string, required) - The type of vehicle (e.g., 'Sedan', 'SUV').
-
-### Response
-
-#### Success (201 Created)
-
-Returns a JSON object with the generated authentication token and the created captain's details.
-
-Example:
-
-```json
-{
-  "token": "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9...",
-  "captain": {
-    "_id": "60c72b2f4f1a2565f8b7d90e",
-    "fullname": {
-      "firstname": "Jane",
-      "lastname": "Doe"
-    },
-    "email": "jane.doe@example.com",
-    "vehicle": {
-      "color": "Black",
-      "plate": "XYZ-123",
-      "capacity": 4,
-      "vehicleType": "Sedan"
-    },
-    "socketId": null
-  }
-}
-```
-
-#### Validation errors (400 Bad Request)
-
-Returned when required fields are missing or inputs fail validation.
-
-Example:
-
-```json
-{
-  "errors": [
-    {
-      "msg": "Invalid email address",
-      "param": "email",
-      "location": "body"
-    }
-  ]
-}
-```
-
-### Notes
-
-- The endpoint requires nested objects for `fullname` and `vehicle`.
-- A JWT auth token is returned on successful registration.
-
+### Running the Server
+
+* **Development Mode (using nodemon):**
+  If `nodemon` is installed globally or to run it via the local package:
+  ```bash
+  npx nodemon server.js
+  ```
+  *(Alternatively, you can add `"dev": "nodemon server.js"` to your `package.json` scripts.)*
+
+* **Production Mode:**
+  ```bash
+  node server.js
+  ```
+  The server will start and listen on the port specified in your `.env` (default is `3000`).
