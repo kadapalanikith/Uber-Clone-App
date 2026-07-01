@@ -1,17 +1,36 @@
-import React, { useState } from "react";
-import { Link } from "react-router-dom";
+import React, { useState, useContext } from "react";
+import { Link, useNavigate } from "react-router-dom";
+import axios from "axios";
+import { CaptainDataContext } from "../context/CaptainContext";
 
 const CaptainSignin = () => {
   const [email, setEmail] = useState("");
   const [password, setPassword] = useState("");
-  const [captainData, setCaptainData] = useState({});
+  const [error, setError] = useState("");
 
-  const submitHandler = (e) => {
+  const navigate = useNavigate();
+  const { captainData, setCaptainData } = useContext(CaptainDataContext);
+
+  const submitHandler = async (e) => {
     e.preventDefault();
-    setCaptainData({
-      email: email,
-      password: password,
-    });
+    setError("");
+
+    try {
+      const response = await axios.post(`${import.meta.env.VITE_BASE_URL}/captains/login`, {
+        email: email,
+        password: password,
+      });
+
+      if (response.status === 200) {
+        const data = response.data;
+        setCaptainData(data.captain);
+        localStorage.setItem("token", data.token);
+        navigate("/captain-home");
+      }
+    } catch (err) {
+      setError(err.response?.data?.message || "Login failed. Invalid email or password.");
+    }
+
     setEmail("");
     setPassword("");
   };
@@ -46,6 +65,7 @@ const CaptainSignin = () => {
             placeholder="password"
           />
 
+          {error && <p className="text-red-500 text-sm mb-3 text-center">{error}</p>}
           <button className="bg-[#111] text-white font-semibold mb-3 rounded-lg px-4 py-3 w-full text-lg hover:bg-black transition-all duration-200">
             Login
           </button>

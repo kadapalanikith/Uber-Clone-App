@@ -1,5 +1,7 @@
-import React, { useState } from "react";
-import { Link } from "react-router-dom";
+import React, { useState, useContext } from "react";
+import { Link, useNavigate } from "react-router-dom";
+import axios from "axios";
+import { CaptainDataContext } from "../context/CaptainContext";
 
 const CaptainSignup = () => {
   const [email, setEmail] = useState("");
@@ -11,15 +13,19 @@ const CaptainSignup = () => {
   const [vehiclePlate, setVehiclePlate] = useState("");
   const [vehicleCapacity, setVehicleCapacity] = useState("");
   const [vehicleType, setVehicleType] = useState("");
+  const [error, setError] = useState("");
 
-  const [captainData, setCaptainData] = useState({});
+  const navigate = useNavigate();
+  const { captainData, setCaptainData } = useContext(CaptainDataContext);
 
-  const submitHandler = (e) => {
+  const submitHandler = async (e) => {
     e.preventDefault();
-    setCaptainData({
-      fullName: {
-        firstName: firstName,
-        lastName: lastName,
+    setError("");
+
+    const newCaptain = {
+      fullname: {
+        firstname: firstName,
+        lastname: lastName,
       },
       email: email,
       password: password,
@@ -29,7 +35,21 @@ const CaptainSignup = () => {
         capacity: parseInt(vehicleCapacity),
         vehicleType: vehicleType,
       }
-    });
+    };
+
+    try {
+      const response = await axios.post(`${import.meta.env.VITE_BASE_URL}/captains/register`, newCaptain);
+
+      if (response.status === 201) {
+        const data = response.data;
+        setCaptainData(data.captain);
+        localStorage.setItem("token", data.token);
+        navigate("/captain-home");
+      }
+    } catch (err) {
+      setError(err.response?.data?.message || "Registration failed. Try again.");
+    }
+
     setFirstName("");
     setLastName("");
     setEmail("");
@@ -133,6 +153,7 @@ const CaptainSignup = () => {
             </select>
           </div>
 
+          {error && <p className="text-red-500 text-sm mb-3 text-center">{error}</p>}
           <button className="bg-[#111] text-white font-semibold mb-3 rounded-lg px-4 py-3 w-full text-lg hover:bg-black transition-all duration-200">
             Create Captain Account
           </button>
