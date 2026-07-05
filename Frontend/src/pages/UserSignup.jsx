@@ -36,7 +36,12 @@ const UserSignup = () => {
         navigate("/home");
       }
     } catch (err) {
-      setError(err.response?.data?.message || "Registration failed. Try again.");
+      if (err.response?.data?.errors) {
+        const errorMsg = err.response.data.errors.map(e => e.msg).join(", ");
+        setError(errorMsg);
+      } else {
+        setError(err.response?.data?.message || "Registration failed. Try again.");
+      }
     }
 
     setFirstName("");

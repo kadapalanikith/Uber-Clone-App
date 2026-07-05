@@ -143,90 +143,112 @@ const Home = () => {
 
           {estimatedFare && (
             <div className="mt-8 space-y-4 animate-fadeIn">
-              <h3 className="text-lg font-bold text-gray-800">Select Ride Option</h3>
+              <h3 className="text-lg font-bold text-gray-800">Choose a Vehicle</h3>
               
+              {/* UberGo Card */}
               <div
                 onClick={() => setSelectedVehicle("car")}
-                className={`flex justify-between items-center p-4 rounded-xl border-2 transition duration-200 cursor-pointer ${
+                className={`flex justify-between items-center p-3 rounded-xl border-2 transition duration-200 cursor-pointer ${
                   selectedVehicle === "car"
                     ? "border-black bg-zinc-50"
-                    : "border-gray-150 hover:bg-zinc-50/50"
+                    : "border-zinc-200 hover:bg-zinc-50/50"
                 }`}
               >
-                <div className="flex items-center gap-4">
-                  <div className="bg-zinc-100 p-2 rounded-lg">
-                    <svg className="w-8 h-8 text-black" fill="currentColor" viewBox="0 0 24 24">
-                      <path d="M18.92 6.01C18.72 5.42 18.16 5 17.5 5h-11c-.66 0-1.21.42-1.42 1.01L3 12v8c0 .55.45 1 1 1h1c.55 0 1-.45 1-1v-1h12v1c0 .55.45 1 1 1h1c.55 0 1-.45 1-1v-8l-2.08-5.99zM6.85 7h10.29l1.04 3H5.81l1.04-3zM19 17H5v-5h14v5z"/>
-                      <circle cx="7.5" cy="14.5" r="1.5"/>
-                      <circle cx="16.5" cy="14.5" r="1.5"/>
-                    </svg>
-                  </div>
+                <div className="flex items-center gap-3">
+                  <img
+                    className="w-16 h-12 object-contain"
+                    src="https://www.uber-assets.com/image-resources/content/dam/images/universal/navigation/UberGo_v1.png"
+                    alt="UberGo"
+                  />
                   <div>
-                    <h4 className="font-bold text-gray-900 flex items-center gap-2">
-                      UberGo <span className="text-xs font-normal text-gray-500">4 min away</span>
+                    <h4 className="font-bold text-gray-900 flex items-center gap-1.5 text-base">
+                      UberGo 
+                      <span className="flex items-center gap-0.5 text-xs text-black font-semibold">
+                        <svg className="w-3.5 h-3.5" fill="currentColor" viewBox="0 0 24 24">
+                          <path d="M12 12c2.21 0 4-1.79 4-4s-1.79-4-4-4-4 1.79-4 4 1.79 4 4 4zm0 2c-2.67 0-8 1.34-8 4v2h16v-2c0-2.66-5.33-4-8-4z"/>
+                        </svg>
+                        4
+                      </span>
                     </h4>
-                    <p className="text-xs text-gray-500">Affordable compact cars</p>
+                    <p className="text-xs font-semibold text-gray-900">2 mins away</p>
+                    <p className="text-xs text-gray-500 font-medium">Affordable, compact rides</p>
                   </div>
                 </div>
                 <div className="text-right">
-                  <p className="font-bold text-gray-950">${estimatedFare.car}</p>
+                  <p className="font-extrabold text-gray-950 text-lg">₹{estimatedFare.car}</p>
                 </div>
               </div>
 
-              <div
-                onClick={() => setSelectedVehicle("auto")}
-                className={`flex justify-between items-center p-4 rounded-xl border-2 transition duration-200 cursor-pointer ${
-                  selectedVehicle === "auto"
-                    ? "border-black bg-zinc-50"
-                    : "border-gray-150 hover:bg-zinc-50/50"
-                }`}
-              >
-                <div className="flex items-center gap-4">
-                  <div className="bg-zinc-100 p-2 rounded-lg">
-                    <svg className="w-8 h-8 text-black" fill="currentColor" viewBox="0 0 24 24">
-                      <path d="M19 8h-1V5h-3v3H9V5H6v3H5c-1.1 0-2 .9-2 2v9c0 .55.45 1 1 1h1c.55 0 1-.45 1-1v-1h12v1c0 .55.45 1 1 1h1c.55 0 1-.45 1-1v-9c0-1.1-.9-2-2-2zM5 10h14v2H5v-2zm14 5H5v-1h14v1z"/>
-                    </svg>
-                  </div>
-                  <div>
-                    <h4 className="font-bold text-gray-900 flex items-center gap-2">
-                      UberAuto <span className="text-xs font-normal text-gray-500">2 min away</span>
-                    </h4>
-                    <p className="text-xs text-gray-500">Auto rickshaw rides</p>
-                  </div>
-                </div>
-                <div className="text-right">
-                  <p className="font-bold text-gray-950">${estimatedFare.auto}</p>
-                </div>
-              </div>
-
+              {/* Moto Card */}
               <div
                 onClick={() => setSelectedVehicle("motorcycle")}
-                className={`flex justify-between items-center p-4 rounded-xl border-2 transition duration-200 cursor-pointer ${
+                className={`flex justify-between items-center p-3 rounded-xl border-2 transition duration-200 cursor-pointer ${
                   selectedVehicle === "motorcycle"
                     ? "border-black bg-zinc-50"
-                    : "border-gray-150 hover:bg-zinc-50/50"
+                    : "border-zinc-200 hover:bg-zinc-50/50"
                 }`}
               >
-                <div className="flex items-center gap-4">
-                  <div className="bg-zinc-100 p-2 rounded-lg">
-                    <svg className="w-8 h-8 text-black" fill="currentColor" viewBox="0 0 24 24">
-                      <path d="M19 15c0-1.1-.9-2-2-2h-3v-2c0-.55-.45-1-1-1h-2V7c0-.55-.45-1-1-1H7v2h2v2H6c-2.21 0-4 1.79-4 4s1.79 4 4 4h11c1.1 0 2-.9 2-2zm-13 2c-1.1 0-2-.9-2-2s.9-2 2-2 2 .9 2 2-.9 2-2 2z"/>
-                    </svg>
-                  </div>
+                <div className="flex items-center gap-3">
+                  <img
+                    className="w-16 h-12 object-contain"
+                    src="https://www.uber-assets.com/image-resources/content/dam/images/universal/navigation/Uber_Moto_Orange_312x208_pixels_v1.png"
+                    alt="Moto"
+                  />
                   <div>
-                    <h4 className="font-bold text-gray-900 flex items-center gap-2">
-                      Moto <span className="text-xs font-normal text-gray-500">1 min away</span>
+                    <h4 className="font-bold text-gray-900 flex items-center gap-1.5 text-base">
+                      Moto 
+                      <span className="flex items-center gap-0.5 text-xs text-black font-semibold">
+                        <svg className="w-3.5 h-3.5" fill="currentColor" viewBox="0 0 24 24">
+                          <path d="M12 12c2.21 0 4-1.79 4-4s-1.79-4-4-4-4 1.79-4 4 1.79 4 4 4zm0 2c-2.67 0-8 1.34-8 4v2h16v-2c0-2.66-5.33-4-8-4z"/>
+                        </svg>
+                        1
+                      </span>
                     </h4>
-                    <p className="text-xs text-gray-500">Quick motorcycle rides</p>
+                    <p className="text-xs font-semibold text-gray-900">3 mins away</p>
+                    <p className="text-xs text-gray-500 font-medium">Affordable motorcycle rides</p>
                   </div>
                 </div>
                 <div className="text-right">
-                  <p className="font-bold text-gray-950">${estimatedFare.motorcycle}</p>
+                  <p className="font-extrabold text-gray-950 text-lg">₹{estimatedFare.motorcycle}</p>
+                </div>
+              </div>
+
+              {/* UberAuto Card */}
+              <div
+                onClick={() => setSelectedVehicle("auto")}
+                className={`flex justify-between items-center p-3 rounded-xl border-2 transition duration-200 cursor-pointer ${
+                  selectedVehicle === "auto"
+                    ? "border-black bg-zinc-50"
+                    : "border-zinc-200 hover:bg-zinc-50/50"
+                }`}
+              >
+                <div className="flex items-center gap-3">
+                  <img
+                    className="w-16 h-12 object-contain"
+                    src="https://www.uber-assets.com/image-resources/content/dam/images/universal/navigation/Uber_Auto_312x208_pixels_v1.png"
+                    alt="UberAuto"
+                  />
+                  <div>
+                    <h4 className="font-bold text-gray-900 flex items-center gap-1.5 text-base">
+                      UberAuto 
+                      <span className="flex items-center gap-0.5 text-xs text-black font-semibold">
+                        <svg className="w-3.5 h-3.5" fill="currentColor" viewBox="0 0 24 24">
+                          <path d="M12 12c2.21 0 4-1.79 4-4s-1.79-4-4-4-4 1.79-4 4 1.79 4 4 4zm0 2c-2.67 0-8 1.34-8 4v2h16v-2c0-2.66-5.33-4-8-4z"/>
+                        </svg>
+                        3
+                      </span>
+                    </h4>
+                    <p className="text-xs font-semibold text-gray-900">3 mins away</p>
+                    <p className="text-xs text-gray-500 font-medium">Affordable Auto rides</p>
+                  </div>
+                </div>
+                <div className="text-right">
+                  <p className="font-extrabold text-gray-950 text-lg">₹{estimatedFare.auto}</p>
                 </div>
               </div>
 
               <button className="w-full bg-black text-white py-3.5 rounded-xl font-bold hover:bg-zinc-800 transition duration-200 shadow-lg cursor-pointer">
-                Confirm {selectedVehicle.toUpperCase()} Booking
+                Confirm {selectedVehicle === "car" ? "UberGo" : selectedVehicle === "auto" ? "UberAuto" : "Moto"} Booking
               </button>
             </div>
           )}
