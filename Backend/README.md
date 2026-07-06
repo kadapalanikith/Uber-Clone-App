@@ -109,8 +109,8 @@ Route protection is handled via custom middleware in [auth.middleware.js](file:/
 Create a `.env` file in the `Backend/` root directory and populate it with your configuration:
 
 ```env
-PORT=3000
-MONGO_URI=mongodb://localhost:27017/uber-clone
+PORT=4000
+DB_CONNECT=mongodb://localhost:27017/uber-clone
 JWT_SECRET=your_jwt_secret_key
 ```
 
@@ -127,4 +127,4 @@ JWT_SECRET=your_jwt_secret_key
   ```bash
   node server.js
   ```
-  The server will start and listen on the port specified in your `.env` (default is `3000`).
+  The server will start and listen on the port specified in your `.env` (default is `3000`, recommended `4000`).

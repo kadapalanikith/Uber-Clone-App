@@ -35,7 +35,10 @@ Frontend/
 │   │   ├── UserSignup.jsx     # Rider registration portal
 │   │   ├── CaptainHome.jsx    # Driver/Captain dashboard/home page
 │   │   ├── CaptainSignin.jsx  # Driver/Captain login portal
-│   │   └── CaptainSignup.jsx  # Driver/Captain registration portal
+│   │   ├── CaptainSignup.jsx  # Driver/Captain registration portal
+│   │   ├── UserLogout.jsx     # Rider logout page/flow
+│   │   ├── UserProtectWrapper.jsx # Route protection for riders
+│   │   └── CaptainProtectWrapper.jsx # Route protection for captains
 │   ├── App.css          # Core layouts and layout configurations
 │   ├── App.jsx          # Routes definition and main component
 │   ├── index.css        # Tailwind CSS imports & directives
@@ -63,6 +66,7 @@ The application uses **React Router v7** for declarative client-side routing. Be
 | `/captainsignup` | `CaptainSignup` | Registration portal for new Drivers. |
 | `/home` | `Home` | Rider dashboard/home page (restricted user area). |
 | `/captain-home` | `CaptainHome` | Captain dashboard/home page (restricted driver area). |
+| `/user/logout` | `UserLogout` | Logout logic for Riders (Users). |
 
 ---
 
@@ -135,9 +139,9 @@ To connect this frontend to the companion Express backend:
 1. Create a `.env` file in the `Frontend/` root directory (if not already present).
 2. Add the backend API base URL:
    ```env
-   VITE_API_URL=http://localhost:3000
+   VITE_BASE_URL=http://localhost:4000
    ```
-3. Utilize `import.meta.env.VITE_API_URL` when making `fetch` or `axios` requests.
+3. Utilize `import.meta.env.VITE_BASE_URL` when making `fetch` or `axios` requests.
 
 ---
 

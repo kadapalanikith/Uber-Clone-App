@@ -18,7 +18,7 @@ graph TD
         UI --> RR
     end
 
-    subgraph Backend [Express Backend - Port 3000]
+    subgraph Backend [Express Backend - Port 4000]
         API[Express.js App]
         MW[Auth Middleware]
         VAL[Request Validators]
@@ -75,9 +75,9 @@ To run this application locally, you will need:
    ```
 3. Create your backend `.env` file:
    ```env
-   PORT=3000
-   MONGO_URI=mongodb://localhost:27017/uber-clone
-   JWT_SECRET=your_super_secret_jwt_key
+    PORT=4000
+    DB_CONNECT=mongodb://localhost:27017/uber-clone
+    JWT_SECRET=your_super_secret_jwt_key
    ```
 4. Start the backend server:
    *   **Development mode** (with auto-reload using `nodemon`):
@@ -100,7 +100,7 @@ To run this application locally, you will need:
    ```
 3. Create your frontend `.env` file:
    ```env
-   VITE_API_URL=http://localhost:3000
+    VITE_BASE_URL=http://localhost:4000
    ```
 4. Start the frontend web application:
    ```bash
