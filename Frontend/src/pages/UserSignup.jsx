@@ -70,7 +70,6 @@ const UserSignup = () => {
               onChange={(e) => setFirstName(e.target.value)}
             />
             <input
-              required
               className="bg-[#eeeeee] w-1/2 rounded px-4 py-2 border text-lg placeholder:text-base focus:outline-none focus:ring-2 focus:ring-black"
               type="text"
               placeholder="Last name"

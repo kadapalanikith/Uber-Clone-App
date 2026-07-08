@@ -1,130 +1,194 @@
-# Uber Clone App - Backend API
+# Backend API Documentation
 
-[![Node.js](https://img.shields.io/badge/Node.js-v16+-339933?logo=node.js&logoColor=white&style=flat-square)](https://nodejs.org/)
-[![Express.js](https://img.shields.io/badge/Express.js-5.2.1-000000?logo=express&logoColor=white&style=flat-square)](https://expressjs.com/)
-[![MongoDB](https://img.shields.io/badge/MongoDB-Mongoose-47A248?logo=mongodb&logoColor=white&style=flat-square)](https://www.mongodb.com/)
-[![JSON Web Tokens](https://img.shields.io/badge/JWT-Authentication-000000?logo=json-web-tokens&logoColor=white&style=flat-square)](https://jwt.io/)
+## `/users/register` Endpoint
 
-Welcome to the backend service of the **Uber Clone App**. This service is responsible for database persistence, business logic, user and captain authentication, and secure route protection.
+### Description
+Registers a new user by creating a user account with the provided information.
 
----
+### HTTP Method
+`POST`
 
-## 🛠️ Tech Stack
+### Request Body
+The request body should be in JSON format and include the following fields:
 
-- **Runtime:** [Node.js](https://nodejs.org/) (CommonJS modules)
-- **Framework:** [Express.js](https://expressjs.com/) (v5.2.1)
-- **Database:** [MongoDB](https://www.mongodb.com/) with [Mongoose ODM](https://mongoosejs.com/) (v9.7.1)
-- **Security & Auth:** [JSON Web Tokens (JWT)](https://jwt.io/), [bcrypt](https://github.com/kelektiv/node.bcrypt.js) password hashing, and [cookie-parser](https://github.com/expressjs/cookie-parser) for cookie-based token handling
-- **Validation:** [express-validator](https://express-validator.github.io/docs/) for robust request input validation
+- **fullname** (object):
+  - **firstname** (string, required): User's first name (minimum 3 characters).
+  - **lastname** (string, optional): User's last name (minimum 3 characters).
+- **email** (string, required): User's email address (must be a valid email).
+- **password** (string, required): User's password (minimum 6 characters).
 
----
-
-## 📂 Directory Structure
-
-```text
-Backend/
-├── controllers/          # Request handlers (User, Captain)
-├── db/                   # Database connection helper (`db.js`)
-├── middlewares/          # Authentication & route protection middleware
-├── models/               # Mongoose schemas (User, Captain, BlacklistToken)
-├── routes/               # Express route declarations
-│   ├── user.routes.js         # Routes for riders
-│   └── captain.routes.js      # Routes for drivers (captains)
-├── services/             # Core business logic (database creation helpers)
-├── .env                  # Environment configurations (local-only)
-├── app.js                # App configuration, CORS, parsers, and route registration
-├── package.json          # Dependencies and scripts
-└── server.js             # Application entry point (creates HTTP server)
-```
+### Example Response
+- **user** (object):
+  - **fullname** (object):
+    - **firstname** (string): User's first name (minimum 3 characters).
+    - **lastname** (string): User's last name (minimum 3 characters).
+  - **email** (string): User's email address (must be a valid email).
+  - **password** (string): User's password (minimum 6 characters).
+- **token** (String): JWT Token
 
 ---
 
-## 🔒 API Endpoints & Documentation
+## `/users/login` Endpoint
 
-### 👤 Rider (User) Routes - `/users`
+### Description
+Authenticates a user using their email and password, returning a JWT token upon successful login.
 
-| HTTP Method | Endpoint | Auth Required | Description |
-| :--- | :--- | :---: | :--- |
-| `POST` | `/users/register` | No | Registers a new user/rider. Requires email, firstname, lastname, and password. |
-| `POST` | `/users/login` | No | Authenticates a user. Returns a JWT and sets an HTTP-only cookie. |
-| `GET` | `/users/profile` | **Yes** | Returns the authenticated user's profile. |
-| `POST` | `/users/logout` | **Yes** | Logs out the user and blacklists their current JWT token. |
+### HTTP Method
+`POST`
 
-#### Request Validations (User Registration):
-- `email`: Must be a valid email address.
-- `fullname.firstname`: Minimum 3 characters.
-- `fullname.lastname`: Minimum 3 characters.
-- `password`: Minimum 6 characters.
+### Request Body
+The request body should be in JSON format and include the following fields:
 
----
+- **email** (string, required): User's email address (must be a valid email).
+- **password** (string, required): User's password (minimum 6 characters).
 
-### 🚕 Driver (Captain) Routes - `/captains`
-
-| HTTP Method | Endpoint | Auth Required | Description |
-| :--- | :--- | :---: | :--- |
-| `POST` | `/captains/register` | No | Registers a new captain/driver. Requires vehicle details. |
-| `POST` | `/captains/login` | No | Authenticates a captain. Returns a JWT and sets an HTTP-only cookie. |
-| `GET` | `/captains/profile` | **Yes** | Returns the authenticated captain's profile. |
-| `GET` | `/captains/logout` | **Yes** | Logs out the captain and clears the session. |
-
-#### Request Validations (Captain Registration):
-- `email`: Must be a valid email address.
-- `fullname.firstname` & `fullname.lastname`: Minimum 3 characters.
-- `password`: Minimum 6 characters.
-- `vehicle.color`: Minimum 3 characters.
-- `vehicle.plate`: Minimum 3 characters.
-- `vehicle.capacity`: Must be an integer.
-- `vehicle.vehicleType`: Must be one of `['car', 'motorcycle', 'auto']`.
+### Example Response
+- **user** (object):
+  - **fullname** (object):
+    - **firstname** (string): User's first name (minimum 3 characters).
+    - **lastname** (string): User's last name (minimum 3 characters).
+  - **email** (string): User's email address (must be a valid email).
+- **token** (String): JWT Token
 
 ---
 
-## 🛡️ Authentication Middleware
+## `/users/profile` Endpoint
 
-Route protection is handled via custom middleware in [auth.middleware.js](file:///d:/Uber%20Clone%20App/Backend/middlewares/auth.middleware.js):
-- **User Route Protection:** `authMiddleware.authUser` checks the incoming request headers (`Authorization: Bearer <token>`) or cookies (`token`) for a valid JWT, verifies it, checks if it's blacklisted, and injects the user object into `req.user`.
-- **Captain Route Protection:** `authMiddleware.authCaptain` performs similar checks specifically for driver accounts and injects the captain object into `req.captain`.
+### Description
+Retrieves the profile of the currently authenticated user.
+
+### HTTP Method
+`GET`
+
+### Headers
+- **Authorization** (string, required): `Bearer <token>`
+
+### Example Response
+- **user** (object):
+  - **fullname** (object):
+    - **firstname** (string): User's first name.
+    - **lastname** (string): User's last name.
+  - **email** (string): User's email address.
 
 ---
 
-## 🔧 Getting Started
+## `/users/logout` Endpoint
 
-### Prerequisites
+### Description
+Logs out the user by blacklisting their active JWT token.
 
-- [Node.js](https://nodejs.org/) (v16 or higher)
-- [MongoDB](https://www.mongodb.com/) (Local instance or MongoDB Atlas URI)
+### HTTP Method
+`POST`
 
-### Installation
+### Headers
+- **Authorization** (string, required): `Bearer <token>`
 
-1. Navigate to the backend directory:
-   ```bash
-   cd Backend
-   ```
-2. Install dependencies:
-   ```bash
-   npm install
-   ```
+### Example Response
+- **message** (string): "Logged out successfully"
 
-### Configuration
+---
 
-Create a `.env` file in the `Backend/` root directory and populate it with your configuration:
+## `/captains/register` Endpoint
 
-```env
-PORT=4000
-DB_CONNECT=mongodb://localhost:27017/uber-clone
-JWT_SECRET=your_jwt_secret_key
-```
+### Description
+Registers a new captain (driver) account with their vehicle specifications.
 
-### Running the Server
+### HTTP Method
+`POST`
 
-* **Development Mode (using nodemon):**
-  If `nodemon` is installed globally or to run it via the local package:
-  ```bash
-  npx nodemon server.js
-  ```
-  *(Alternatively, you can add `"dev": "nodemon server.js"` to your `package.json` scripts.)*
+### Request Body
+The request body should be in JSON format and include the following fields:
 
-* **Production Mode:**
-  ```bash
-  node server.js
-  ```
-  The server will start and listen on the port specified in your `.env` (default is `3000`, recommended `4000`).
+- **fullname** (object):
+  - **firstname** (string, required): Captain's first name (minimum 3 characters).
+  - **lastname** (string, optional): Captain's last name (minimum 3 characters).
+- **email** (string, required): Captain's email address (must be a valid email).
+- **password** (string, required): Captain's password (minimum 6 characters).
+- **vehicle** (object):
+  - **color** (string, required): Vehicle color (minimum 3 characters).
+  - **plate** (string, required): License plate number (minimum 3 characters).
+  - **capacity** (number, required): Passenger capacity (minimum 1).
+  - **vehicleType** (string, required): Type of vehicle (must be `car`, `motorcycle`, or `auto`).
+
+### Example Response
+- **captain** (object):
+  - **fullname** (object):
+    - **firstname** (string): Captain's first name.
+    - **lastname** (string): Captain's last name.
+  - **email** (string): Captain's email address.
+  - **vehicle** (object):
+    - **color** (string): Vehicle color.
+    - **plate** (string): License plate number.
+    - **capacity** (number): Passenger capacity.
+    - **vehicleType** (string): Type of vehicle.
+- **token** (String): JWT Token
+
+---
+
+## `/captains/login` Endpoint
+
+### Description
+Authenticates a captain using their email and password, returning a JWT token upon successful login.
+
+### HTTP Method
+`POST`
+
+### Request Body
+The request body should be in JSON format and include the following fields:
+
+- **email** (string, required): Captain's email address (must be a valid email).
+- **password** (string, required): Captain's password (minimum 6 characters).
+
+### Example Response
+- **captain** (object):
+  - **fullname** (object):
+    - **firstname** (string): Captain's first name.
+    - **lastname** (string): Captain's last name.
+  - **email** (string): Captain's email address.
+  - **vehicle** (object):
+    - **color** (string): Vehicle color.
+    - **plate** (string): License plate number.
+    - **capacity** (number): Passenger capacity.
+    - **vehicleType** (string): Type of vehicle.
+- **token** (String): JWT Token
+
+---
+
+## `/captains/profile` Endpoint
+
+### Description
+Retrieves the profile of the currently authenticated captain.
+
+### HTTP Method
+`GET`
+
+### Headers
+- **Authorization** (string, required): `Bearer <token>`
+
+### Example Response
+- **captain** (object):
+  - **fullname** (object):
+    - **firstname** (string): Captain's first name.
+    - **lastname** (string): Captain's last name.
+  - **email** (string): Captain's email address.
+  - **vehicle** (object):
+    - **color** (string): Vehicle color.
+    - **plate** (string): License plate.
+    - **capacity** (number): Passenger capacity.
+    - **vehicleType** (string): Vehicle type.
+
+---
+
+## `/captains/logout` Endpoint
+
+### Description
+Logs out the captain by blacklisting their active JWT token.
+
+### HTTP Method
+`GET`
+
+### Headers
+- **Authorization** (string, required): `Bearer <token>`
+
+### Example Response
+- **message** (string): "Logged out successfully"
