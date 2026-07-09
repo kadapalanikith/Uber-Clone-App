@@ -7,19 +7,27 @@ const jwt = require("jsonwebtoken");
 module.exports.authUser = async (req, res, next) => { 
     const token = req.cookies?.token || req.headers.authorization?.split(" ")[1];
 
-
     if (!token) {
         return res.status(401).json({ message: "Access denied. No token provided." });
     }
 
-    const isBlacklisted = await blacklistTokenModel.findOne({ token });
-    
-    if (isBlacklisted) {
-        return res.status(401).json({ message: "Token is blacklisted. Please log in again." });
+    try {
+        const isBlacklisted = await blacklistTokenModel.findOne({ token });
+        if (isBlacklisted) {
+            return res.status(401).json({ message: "Token is blacklisted. Please log in again." });
+        }
+    } catch (error) {
+        return next(error);
+    }
+
+    let decoded;
+    try {
+        decoded = jwt.verify(token, process.env.JWT_SECRET);
+    } catch (error) {
+        return res.status(401).json({ message: "Invalid token." });
     }
 
     try {
-        const decoded = jwt.verify(token, process.env.JWT_SECRET);
         const user = await userModel.findById(decoded._id);
         if (!user) {
             return res.status(401).json({ message: "Unauthorized. User not found." });
@@ -27,7 +35,7 @@ module.exports.authUser = async (req, res, next) => {
         req.user = user;
         return next();
     } catch (error) {
-        return res.status(401).json({ message: "Invalid token." });
+        return next(error);
     }
 }
 
@@ -39,14 +47,23 @@ module.exports.authCaptain = async (req, res, next) => {
         return res.status(401).json({ message: "Access denied. No token provided." });
     }
 
-    const isBlacklisted = await blacklistTokenModel.findOne({ token });
+    try {
+        const isBlacklisted = await blacklistTokenModel.findOne({ token });
+        if (isBlacklisted) { 
+            return res.status(401).json({ message: "Token is blacklisted. Please log in again." });
+        }
+    } catch (error) {
+        return next(error);
+    }
 
-    if (isBlacklisted) { 
-        return res.status(401).json({ message: "Token is blacklisted. Please log in again." });
+    let decoded;
+    try {
+        decoded = jwt.verify(token, process.env.JWT_SECRET);
+    } catch (err) {
+        return res.status(401).json({ message: "Invalid token." });
     }
 
     try {
-        const decoded = jwt.verify(token, process.env.JWT_SECRET);
         const captain = await captainModel.findById(decoded._id);
         if (!captain) {
             return res.status(401).json({ message: "Unauthorized. Captain not found." });
@@ -54,7 +71,6 @@ module.exports.authCaptain = async (req, res, next) => {
         req.captain = captain;
         return next();
     } catch (err) {
-        return res.status(401).json({ message: "Invalid token." });
+        return next(err);
     }
 }
-

@@ -329,7 +329,9 @@ const Home = () => {
                     </p>
                   </div>
                   <div className="w-12 h-12 bg-zinc-200 rounded-full overflow-hidden flex items-center justify-center border-2 border-white shadow">
-                    <span className="font-extrabold text-zinc-600 text-base">VS</span>
+                    <span className="font-extrabold text-zinc-600 text-base">
+                      {assignedCaptain.name ? assignedCaptain.name.split(" ").map(n => n[0]).join("").toUpperCase() : "VS"}
+                    </span>
                   </div>
                 </div>
 
@@ -420,7 +422,7 @@ const Home = () => {
 
               <div>
                 <h3 className="text-2xl font-black text-gray-900">You have arrived!</h3>
-                <p className="text-sm text-gray-500 mt-1">Hope you enjoyed your ride with Vikram Singh.</p>
+                <p className="text-sm text-gray-500 mt-1">Hope you enjoyed your ride with {assignedCaptain?.name || "your captain"}.</p>
               </div>
 
               <div className="w-full bg-gray-50 border border-gray-100 rounded-xl p-5 space-y-3">
