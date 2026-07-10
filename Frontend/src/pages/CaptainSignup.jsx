@@ -43,7 +43,7 @@ const CaptainSignup = () => {
       if (response.status === 201) {
         const data = response.data;
         setCaptainData(data.captain);
-        localStorage.setItem("token", data.token);
+        localStorage.setItem("captain_token", data.token);
         navigate("/captain-home");
       }
     } catch (err) {
@@ -66,113 +66,128 @@ const CaptainSignup = () => {
   };
 
   return (
-    <div className="p-7 flex flex-col justify-between h-screen max-w-md mx-auto overflow-y-auto">
-      <div>
-        <img
-          className="w-20 mb-6"
-          src="https://upload.wikimedia.org/wikipedia/commons/5/58/Uber_logo_2018.svg"
-          alt="Uber Captain Logo"
-          style={{ filter: "brightness(0) saturate(100%)" }}
-        />
-        <form onSubmit={submitHandler}>
-          <h3 className="text-lg font-medium mb-2">What's your name?</h3>
-          <div className="flex gap-4 mb-5">
-            <input
-              required
-              className="bg-[#eeeeee] w-1/2 rounded px-4 py-2 border text-lg placeholder:text-base focus:outline-none focus:ring-2 focus:ring-[#10b461]"
-              type="text"
-              placeholder="First name"
-              value={firstName}
-              onChange={(e) => setFirstName(e.target.value)}
+    <div className="min-h-screen bg-zinc-950 flex items-center justify-center p-4 sm:p-6 md:p-8 font-sans">
+      <div className="bg-zinc-900 text-white rounded-2xl shadow-2xl w-full max-w-md p-6 sm:p-8 flex flex-col justify-between min-h-[600px] border border-zinc-800">
+        <div>
+          <div className="flex items-center gap-2 mb-6">
+            <img
+              className="w-16 filter invert"
+              src="https://upload.wikimedia.org/wikipedia/commons/5/58/Uber_logo_2018.svg"
+              alt="Uber Logo"
             />
-            <input
-              className="bg-[#eeeeee] w-1/2 rounded px-4 py-2 border text-lg placeholder:text-base focus:outline-none focus:ring-2 focus:ring-[#10b461]"
-              type="text"
-              placeholder="Last name"
-              value={lastName}
-              onChange={(e) => setLastName(e.target.value)}
-            />
+            <span className="bg-[#10b461] text-[10px] font-bold text-white px-2 py-0.5 rounded">
+              CAPTAIN
+            </span>
           </div>
 
-          <h3 className="text-lg font-medium mb-2">What's your email?</h3>
-          <input
-            required
-            className="bg-[#eeeeee] mb-5 rounded px-4 py-2 border w-full text-lg placeholder:text-base focus:outline-none focus:ring-2 focus:ring-[#10b461]"
-            type="email"
-            placeholder="email@example.com"
-            value={email}
-            onChange={(e) => setEmail(e.target.value)}
-          />
+          <form onSubmit={submitHandler} className="space-y-4">
+            <div>
+              <h3 className="text-base font-semibold text-zinc-300 mb-1.5">What's your name?</h3>
+              <div className="flex gap-3">
+                <input
+                  required
+                  className="bg-zinc-800 text-white placeholder:text-zinc-500 rounded-lg px-4 py-2.5 border border-zinc-700 w-1/2 text-base focus:outline-none focus:ring-2 focus:ring-[#10b461] focus:border-transparent transition duration-200"
+                  type="text"
+                  placeholder="First name"
+                  value={firstName}
+                  onChange={(e) => setFirstName(e.target.value)}
+                />
+                <input
+                  className="bg-zinc-800 text-white placeholder:text-zinc-500 rounded-lg px-4 py-2.5 border border-zinc-700 w-1/2 text-base focus:outline-none focus:ring-2 focus:ring-[#10b461] focus:border-transparent transition duration-200"
+                  type="text"
+                  placeholder="Last name"
+                  value={lastName}
+                  onChange={(e) => setLastName(e.target.value)}
+                />
+              </div>
+            </div>
 
-          <h3 className="text-lg font-medium mb-2">Enter Password</h3>
-          <input
-            required
-            className="bg-[#eeeeee] mb-5 rounded px-4 py-2 border w-full text-lg placeholder:text-base focus:outline-none focus:ring-2 focus:ring-[#10b461]"
-            type="password"
-            placeholder="password"
-            value={password}
-            onChange={(e) => setPassword(e.target.value)}
-          />
+            <div>
+              <h3 className="text-base font-semibold text-zinc-300 mb-1.5">What's your email?</h3>
+              <input
+                required
+                className="bg-zinc-800 text-white placeholder:text-zinc-500 rounded-lg px-4 py-2.5 border border-zinc-700 w-full text-base focus:outline-none focus:ring-2 focus:ring-[#10b461] focus:border-transparent transition duration-200"
+                type="email"
+                placeholder="email@example.com"
+                value={email}
+                onChange={(e) => setEmail(e.target.value)}
+              />
+            </div>
 
-          <h3 className="text-lg font-medium mb-2">Vehicle Information</h3>
-          <div className="flex gap-4 mb-5">
-            <input
-              required
-              className="bg-[#eeeeee] w-1/2 rounded px-4 py-2 border text-lg placeholder:text-base focus:outline-none focus:ring-2 focus:ring-[#10b461]"
-              type="text"
-              placeholder="Vehicle Color"
-              value={vehicleColor}
-              onChange={(e) => setVehicleColor(e.target.value)}
-            />
-            <input
-              required
-              className="bg-[#eeeeee] w-1/2 rounded px-4 py-2 border text-lg placeholder:text-base focus:outline-none focus:ring-2 focus:ring-[#10b461]"
-              type="text"
-              placeholder="Vehicle Plate"
-              value={vehiclePlate}
-              onChange={(e) => setVehiclePlate(e.target.value)}
-            />
-          </div>
+            <div>
+              <h3 className="text-base font-semibold text-zinc-300 mb-1.5">Enter Password</h3>
+              <input
+                required
+                className="bg-zinc-800 text-white placeholder:text-zinc-500 rounded-lg px-4 py-2.5 border border-zinc-700 w-full text-base focus:outline-none focus:ring-2 focus:ring-[#10b461] focus:border-transparent transition duration-200"
+                type="password"
+                placeholder="Password"
+                value={password}
+                onChange={(e) => setPassword(e.target.value)}
+              />
+            </div>
 
-          <div className="flex gap-4 mb-7">
-            <input
-              required
-              className="bg-[#eeeeee] w-1/2 rounded px-4 py-2 border text-lg placeholder:text-base focus:outline-none focus:ring-2 focus:ring-[#10b461]"
-              type="number"
-              min="1"
-              placeholder="Capacity"
-              value={vehicleCapacity}
-              onChange={(e) => setVehicleCapacity(e.target.value)}
-            />
-            <select
-              required
-              className="bg-[#eeeeee] w-1/2 rounded px-4 py-2 border text-lg placeholder:text-base focus:outline-none focus:ring-2 focus:ring-[#10b461]"
-              value={vehicleType}
-              onChange={(e) => setVehicleType(e.target.value)}
-            >
-              <option value="" disabled>Select Vehicle Type</option>
-              <option value="car">Car</option>
-              <option value="auto">Auto</option>
-              <option value="motorcycle">Motorcycle</option>
-            </select>
-          </div>
+            <div>
+              <h3 className="text-base font-semibold text-zinc-300 mb-1.5">Vehicle Information</h3>
+              <div className="flex gap-3">
+                <input
+                  required
+                  className="bg-zinc-800 text-white placeholder:text-zinc-500 rounded-lg px-4 py-2.5 border border-zinc-700 w-1/2 text-base focus:outline-none focus:ring-2 focus:ring-[#10b461] focus:border-transparent transition duration-200"
+                  type="text"
+                  placeholder="Vehicle Color"
+                  value={vehicleColor}
+                  onChange={(e) => setVehicleColor(e.target.value)}
+                />
+                <input
+                  required
+                  className="bg-zinc-800 text-white placeholder:text-zinc-500 rounded-lg px-4 py-2.5 border border-zinc-700 w-1/2 text-base focus:outline-none focus:ring-2 focus:ring-[#10b461] focus:border-transparent transition duration-200"
+                  type="text"
+                  placeholder="Vehicle Plate"
+                  value={vehiclePlate}
+                  onChange={(e) => setVehiclePlate(e.target.value)}
+                />
+              </div>
+            </div>
 
-          {error && <p className="text-red-500 text-sm mb-3 text-center">{error}</p>}
-          <button className="bg-[#111] text-white font-semibold mb-3 rounded-lg px-4 py-3 w-full text-lg hover:bg-black transition-all duration-200">
-            Create Captain Account
-          </button>
-        </form>
-        <p className="text-center mb-8">
-          Already have a partner account?{" "}
-          <Link to="/captainlogin" className="text-blue-600 hover:underline">
-            Login here
-          </Link>
-        </p>
-      </div>
-      <div className="mb-4">
-        <p className="text-[10px] leading-tight text-gray-500 text-center">
-          By proceeding, you agree to the Partner Terms and conditions and acknowledge you have read the Privacy Policy.
-        </p>
+            <div className="flex gap-3">
+              <input
+                required
+                className="bg-zinc-800 text-white placeholder:text-zinc-500 rounded-lg px-4 py-2.5 border border-zinc-700 w-1/2 text-base focus:outline-none focus:ring-2 focus:ring-[#10b461] focus:border-transparent transition duration-200"
+                type="number"
+                min="1"
+                placeholder="Capacity"
+                value={vehicleCapacity}
+                onChange={(e) => setVehicleCapacity(e.target.value)}
+              />
+              <select
+                required
+                className="bg-zinc-800 text-zinc-300 rounded-lg px-4 py-2.5 border border-zinc-700 w-1/2 text-base focus:outline-none focus:ring-2 focus:ring-[#10b461] focus:border-transparent transition duration-200"
+                value={vehicleType}
+                onChange={(e) => setVehicleType(e.target.value)}
+              >
+                <option value="" disabled className="text-zinc-500">Select Type</option>
+                <option value="car" className="text-white">Car</option>
+                <option value="auto" className="text-white">Auto</option>
+                <option value="motorcycle" className="text-white">Motorcycle</option>
+              </select>
+            </div>
+
+            {error && <p className="text-red-400 text-sm mt-1 text-center font-medium">{error}</p>}
+            <button className="bg-white text-zinc-950 font-bold rounded-lg px-4 py-3 w-full text-base hover:bg-zinc-100 transition duration-200 cursor-pointer shadow-md mt-6">
+              Create Captain Account
+            </button>
+          </form>
+          <p className="text-center text-sm text-zinc-400 mt-6">
+            Already have a partner account?{" "}
+            <Link to="/captainlogin" className="text-emerald-400 font-semibold hover:underline">
+              Login here
+            </Link>
+          </p>
+        </div>
+        <div className="mt-8 border-t border-zinc-800 pt-6">
+          <p className="text-[10px] leading-tight text-zinc-500 text-center font-medium">
+            By proceeding, you agree to the Partner Terms and conditions and acknowledge you have read the Privacy Policy.
+          </p>
+        </div>
       </div>
     </div>
   );

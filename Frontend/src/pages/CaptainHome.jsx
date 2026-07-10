@@ -11,7 +11,7 @@ const CaptainHome = () => {
   const [activeRide, setActiveRide] = useState(null);
 
   useEffect(() => {
-    const token = localStorage.getItem("token");
+    const token = localStorage.getItem("captain_token");
     if (!token) {
       navigate("/captainlogin");
       return;
@@ -30,7 +30,7 @@ const CaptainHome = () => {
           }
         })
         .catch(() => {
-          localStorage.removeItem("token");
+          localStorage.removeItem("captain_token");
           navigate("/captainlogin");
         });
     }
@@ -51,7 +51,7 @@ const CaptainHome = () => {
   }, [navigate, captainData, setCaptainData]);
 
   const handleLogout = async () => {
-    const token = localStorage.getItem("token");
+    const token = localStorage.getItem("captain_token");
     try {
       await axios.get(`${import.meta.env.VITE_BASE_URL}/captains/logout`, {
         headers: {
@@ -61,7 +61,7 @@ const CaptainHome = () => {
     } catch (err) {
       console.error("Logout API failed", err);
     } finally {
-      localStorage.removeItem("token");
+      localStorage.removeItem("captain_token");
       setCaptainData({});
       navigate("/captainlogin");
     }
@@ -83,7 +83,7 @@ const CaptainHome = () => {
   return (
     <div className="h-screen w-screen flex flex-col md:flex-row relative bg-zinc-950 text-white overflow-hidden font-sans">
       {/* Sidebar / Status Dashboard */}
-      <div className="w-full md:w-[420px] h-full bg-zinc-900 shadow-2xl z-10 flex flex-col justify-between border-r border-zinc-800">
+      <div className="absolute bottom-0 left-0 right-0 w-full max-h-[75vh] md:relative md:w-[420px] md:h-full md:max-h-none bg-zinc-900 shadow-[0_-10px_30px_rgba(0,0,0,0.3)] md:shadow-2xl z-10 flex flex-col justify-between border-t md:border-t-0 md:border-r border-zinc-800 rounded-t-3xl md:rounded-t-none transition-all duration-300">
         <div className="p-6 overflow-y-auto">
           {/* Header */}
           <div className="flex justify-between items-center mb-8">
@@ -267,7 +267,7 @@ const CaptainHome = () => {
 
       {/* Map Simulated Background */}
       <div
-        className="flex-1 h-full min-h-[300px] relative bg-cover bg-center"
+        className="absolute inset-0 w-full h-full md:relative md:flex-1 md:h-full bg-cover bg-center z-0"
         style={{
           backgroundImage: `url('https://images.unsplash.com/photo-1524661135-423995f22d0b?q=80&w=2000&auto=format&fit=crop')`,
           filter: "brightness(0.2) contrast(1.2)", // Dark theme map for captains

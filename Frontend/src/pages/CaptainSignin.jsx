@@ -24,7 +24,7 @@ const CaptainSignin = () => {
       if (response.status === 200) {
         const data = response.data;
         setCaptainData(data.captain);
-        localStorage.setItem("token", data.token);
+        localStorage.setItem("captain_token", data.token);
         navigate("/captain-home");
       }
     } catch (err) {
@@ -36,54 +36,65 @@ const CaptainSignin = () => {
   };
 
   return (
-    <div className="p-7 flex flex-col justify-between h-screen max-w-md mx-auto">
-      <div>
-        <img
-          className="w-20 mb-10"
-          src="https://upload.wikimedia.org/wikipedia/commons/5/58/Uber_logo_2018.svg"
-          alt="Uber Captain Logo"
-          style={{ filter: "brightness(0) saturate(100%)" }} // make it clean black
-        />
-        <form onSubmit={submitHandler}>
-          <h3 className="text-lg font-medium mb-2">What's your email?</h3>
-          <input
-            required
-            value={email}
-            onChange={(e) => setEmail(e.target.value)}
-            type="email"
-            className="bg-[#eeeeee] mb-7 rounded px-4 py-2 border w-full text-lg placeholder:text-base focus:outline-none focus:ring-2 focus:ring-[#10b461]"
-            placeholder="email@example.com"
-          />
+    <div className="min-h-screen bg-zinc-950 flex items-center justify-center p-4 sm:p-6 md:p-8 font-sans">
+      <div className="bg-zinc-900 text-white rounded-2xl shadow-2xl w-full max-w-md p-6 sm:p-8 flex flex-col justify-between min-h-[550px] border border-zinc-800">
+        <div>
+          <div className="flex items-center gap-2 mb-8">
+            <img
+              className="w-16 filter invert"
+              src="https://upload.wikimedia.org/wikipedia/commons/5/58/Uber_logo_2018.svg"
+              alt="Uber Logo"
+            />
+            <span className="bg-[#10b461] text-[10px] font-bold text-white px-2 py-0.5 rounded">
+              CAPTAIN
+            </span>
+          </div>
+          
+          <form onSubmit={submitHandler} className="space-y-4">
+            <div>
+              <h3 className="text-base font-semibold text-zinc-300 mb-1.5">What's your email?</h3>
+              <input
+                required
+                value={email}
+                onChange={(e) => setEmail(e.target.value)}
+                type="email"
+                className="bg-zinc-800 text-white placeholder:text-zinc-500 rounded-lg px-4 py-2.5 border border-zinc-700 w-full text-base focus:outline-none focus:ring-2 focus:ring-[#10b461] focus:border-transparent transition duration-200"
+                placeholder="email@example.com"
+              />
+            </div>
 
-          <h3 className="text-lg font-medium mb-2">Enter Password</h3>
-          <input
-            required
-            value={password}
-            onChange={(e) => setPassword(e.target.value)}
-            type="password"
-            className="bg-[#eeeeee] mb-7 rounded px-4 py-2 border w-full text-lg placeholder:text-base focus:outline-none focus:ring-2 focus:ring-[#10b461]"
-            placeholder="password"
-          />
+            <div>
+              <h3 className="text-base font-semibold text-zinc-300 mb-1.5">Enter Password</h3>
+              <input
+                required
+                value={password}
+                onChange={(e) => setPassword(e.target.value)}
+                type="password"
+                className="bg-zinc-800 text-white placeholder:text-zinc-500 rounded-lg px-4 py-2.5 border border-zinc-700 w-full text-base focus:outline-none focus:ring-2 focus:ring-[#10b461] focus:border-transparent transition duration-200"
+                placeholder="Password"
+              />
+            </div>
 
-          {error && <p className="text-red-500 text-sm mb-3 text-center">{error}</p>}
-          <button className="bg-[#111] text-white font-semibold mb-3 rounded-lg px-4 py-3 w-full text-lg hover:bg-black transition-all duration-200">
-            Login
-          </button>
-        </form>
-        <p className="text-center">
-          Join as a partner?{" "}
-          <Link to="/captainsignup" className="text-blue-600 hover:underline">
-            Register as a Captain
+            {error && <p className="text-red-400 text-sm mt-1 text-center font-medium">{error}</p>}
+            <button className="bg-white text-zinc-950 font-bold rounded-lg px-4 py-3 w-full text-base hover:bg-zinc-100 transition duration-200 cursor-pointer shadow-md mt-4">
+              Login
+            </button>
+          </form>
+          <p className="text-center text-sm text-zinc-400 mt-6">
+            Join as a partner?{" "}
+            <Link to="/captainsignup" className="text-emerald-400 font-semibold hover:underline">
+              Register as a Captain
+            </Link>
+          </p>
+        </div>
+        <div className="mt-8 border-t border-zinc-800 pt-6">
+          <Link
+            to="/login"
+            className="bg-[#d5622d] text-white flex items-center justify-center font-bold rounded-lg px-4 py-3 w-full text-base hover:bg-[#c25325] transition duration-200 shadow-sm"
+          >
+            Sign in as User
           </Link>
-        </p>
-      </div>
-      <div className="mb-4">
-        <Link
-          to="/login"
-          className="bg-[#d5622d] text-white flex items-center justify-center font-semibold mb-5 rounded-lg px-4 py-3 w-full text-lg hover:bg-[#c25325] transition-all duration-200"
-        >
-          Sign in as User
-        </Link>
+        </div>
       </div>
     </div>
   );

@@ -29,7 +29,7 @@ const Home = () => {
   const [assignedCaptain, setAssignedCaptain] = useState(null);
 
   useEffect(() => {
-    const token = localStorage.getItem("token");
+    const token = localStorage.getItem("user_token");
     if (!token) {
       navigate("/login");
       return;
@@ -48,14 +48,14 @@ const Home = () => {
           }
         })
         .catch(() => {
-          localStorage.removeItem("token");
+          localStorage.removeItem("user_token");
           navigate("/login");
         });
     }
   }, [navigate, userData, setUserData]);
 
   const handleLogout = async () => {
-    const token = localStorage.getItem("token");
+    const token = localStorage.getItem("user_token");
     try {
       await axios.post(
         `${import.meta.env.VITE_BASE_URL}/users/logout`,
@@ -69,7 +69,7 @@ const Home = () => {
     } catch (err) {
       console.error("Logout API failed", err);
     } finally {
-      localStorage.removeItem("token");
+      localStorage.removeItem("user_token");
       setUserData({});
       navigate("/login");
     }
@@ -139,7 +139,7 @@ const Home = () => {
     <div className="h-screen w-screen flex flex-col md:flex-row relative bg-zinc-50 overflow-hidden font-sans">
       
       {/* Sidebar Dashboard */}
-      <div className="w-full md:w-[420px] h-full bg-white shadow-2xl z-10 flex flex-col justify-between border-r border-gray-100 relative">
+      <div className="absolute bottom-0 left-0 right-0 w-full max-h-[75vh] md:relative md:w-[420px] md:h-full md:max-h-none bg-white shadow-[0_-10px_30px_rgba(0,0,0,0.15)] md:shadow-2xl z-10 flex flex-col justify-between border-t md:border-t-0 md:border-r border-gray-100 rounded-t-3xl md:rounded-t-none transition-all duration-300">
         <div className="p-6 overflow-y-auto flex-1">
           
           {/* Header */}
@@ -455,7 +455,7 @@ const Home = () => {
 
       {/* Simulated Map / Right Screen Area */}
       <div 
-        className="flex-1 h-full min-h-[300px] relative bg-cover bg-center transition-all duration-700"
+        className="absolute inset-0 w-full h-full md:relative md:flex-1 md:h-full bg-cover bg-center transition-all duration-700 z-0"
         style={{
           backgroundImage: `url('https://images.unsplash.com/photo-1524661135-423995f22d0b?q=80&w=2000&auto=format&fit=crop')`,
           filter: rideStarted ? "brightness(0.85) contrast(1.1)" : "brightness(0.95)"
