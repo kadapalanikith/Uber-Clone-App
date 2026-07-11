@@ -5,7 +5,7 @@ const Start = () => {
   return (
     <div className="min-h-screen bg-zinc-50 flex items-center justify-center p-0 sm:p-6 md:p-8 font-sans">
       <div 
-        className="w-full sm:max-w-md h-[100dvh] sm:h-[800px] flex justify-between flex-col relative overflow-hidden sm:shadow-2xl sm:rounded-2xl bg-cover bg-center border border-gray-100"
+        className="w-full sm:max-w-md h-[100dvh] sm:h-[800px] sm:max-h-[90vh] flex justify-between flex-col relative overflow-hidden sm:shadow-2xl sm:rounded-2xl bg-cover bg-center border border-gray-100"
         style={{ backgroundImage: "url('https://images.unsplash.com/photo-1619252584172-a83a949b6efd?q=80&w=1000&auto=format&fit=crop')" }}
       >
         <div className="pt-8 pl-8">

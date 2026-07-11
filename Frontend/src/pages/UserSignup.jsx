@@ -52,7 +52,7 @@ const UserSignup = () => {
 
   return (
     <div className="min-h-screen bg-zinc-50 flex items-center justify-center p-4 sm:p-6 md:p-8 font-sans">
-      <div className="bg-white rounded-2xl shadow-xl w-full max-w-md p-6 sm:p-8 flex flex-col justify-between min-h-[580px] border border-gray-100">
+      <div className="bg-white rounded-2xl shadow-xl w-full max-w-md p-5 sm:p-8 flex flex-col justify-between min-h-[500px] sm:min-h-[580px] border border-gray-100">
         <div>
           <img
             className="w-16 mb-8"

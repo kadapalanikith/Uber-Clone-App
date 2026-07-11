@@ -84,7 +84,7 @@ const CaptainHome = () => {
     <div className="h-screen w-screen flex flex-col md:flex-row relative bg-zinc-950 text-white overflow-hidden font-sans">
       {/* Sidebar / Status Dashboard */}
       <div className="absolute bottom-0 left-0 right-0 w-full max-h-[75vh] md:relative md:w-[420px] md:h-full md:max-h-none bg-zinc-900 shadow-[0_-10px_30px_rgba(0,0,0,0.3)] md:shadow-2xl z-10 flex flex-col justify-between border-t md:border-t-0 md:border-r border-zinc-800 rounded-t-3xl md:rounded-t-none transition-all duration-300">
-        <div className="p-6 overflow-y-auto">
+        <div className="p-4 sm:p-6 overflow-y-auto flex-1">
           {/* Header */}
           <div className="flex justify-between items-center mb-8">
             <div className="flex items-center gap-2">
@@ -260,7 +260,7 @@ const CaptainHome = () => {
             </div>
           )}
         </div>
-        <div className="p-6 border-t border-zinc-800 text-xs text-zinc-500 text-center">
+        <div className="p-4 sm:p-6 border-t border-zinc-800 text-xs text-zinc-500 text-center bg-zinc-900">
           © {new Date().getFullYear()} Uber Clone App Inc.
         </div>
       </div>
@@ -289,7 +289,7 @@ const CaptainHome = () => {
 
         {/* Simulated Route Markers for Active Ride */}
         {activeRide && (
-          <div className="absolute inset-0 flex items-center justify-center pointer-events-none">
+          <div className="absolute inset-0 flex items-start md:items-center justify-center pt-24 md:pt-0 pointer-events-none">
             <div className="bg-zinc-900/90 text-white backdrop-blur-md px-6 py-4 rounded-2xl border border-zinc-800 shadow-2xl space-y-1">
               <p className="text-xs text-zinc-500 uppercase tracking-widest font-bold">Navigation Route</p>
               <p className="text-sm font-bold">Driving to passenger destination: {activeRide.destination}</p>

@@ -139,8 +139,12 @@ const Home = () => {
     <div className="h-screen w-screen flex flex-col md:flex-row relative bg-zinc-50 overflow-hidden font-sans">
       
       {/* Sidebar Dashboard */}
-      <div className="absolute bottom-0 left-0 right-0 w-full max-h-[75vh] md:relative md:w-[420px] md:h-full md:max-h-none bg-white shadow-[0_-10px_30px_rgba(0,0,0,0.15)] md:shadow-2xl z-10 flex flex-col justify-between border-t md:border-t-0 md:border-r border-gray-100 rounded-t-3xl md:rounded-t-none transition-all duration-300">
-        <div className="p-6 overflow-y-auto flex-1">
+      <div className={`absolute bottom-0 left-0 right-0 w-full md:relative md:w-[420px] md:h-full md:max-h-none bg-white shadow-[0_-10px_30px_rgba(0,0,0,0.15)] md:shadow-2xl z-10 flex flex-col justify-between border-t md:border-t-0 md:border-r border-gray-100 md:rounded-t-none transition-all duration-300 ${
+        panelOpen 
+          ? "h-full max-h-full rounded-none" 
+          : "max-h-[75vh] rounded-t-3xl"
+      }`}>
+        <div className="p-4 sm:p-6 overflow-y-auto flex-1">
           
           {/* Header */}
           <div className="flex justify-between items-center mb-8">
@@ -161,9 +165,9 @@ const Home = () => {
 
           {/* Initial Search Panel */}
           {!vehiclePanelOpen && !confirmRidePanelOpen && !waitingForDriver && !rideStarted && !rideCompleted && (
-            <div className="space-y-6">
+            <div className="space-y-4 sm:space-y-6">
               {userData?.fullName?.firstName && (
-                <div className="p-4 rounded-xl bg-gray-50 border border-gray-100">
+                <div className="p-3 sm:p-4 rounded-xl bg-gray-50 border border-gray-100">
                   <p className="text-sm text-gray-500 font-medium">Welcome back,</p>
                   <h2 className="text-xl font-bold text-gray-900">
                     {userData.fullName.firstName} {userData.fullName.lastName}
@@ -448,7 +452,7 @@ const Home = () => {
         </div>
 
         {/* Footer */}
-        <div className="p-6 border-t border-gray-100 text-xs text-gray-400 text-center bg-white">
+        <div className="p-4 sm:p-6 border-t border-gray-100 text-xs text-gray-400 text-center bg-white">
           © {new Date().getFullYear()} Uber Clone App Inc.
         </div>
       </div>
@@ -465,7 +469,7 @@ const Home = () => {
         
         {/* Floating simulation indicators */}
         {isSearching && (
-          <div className="absolute inset-0 flex items-center justify-center pointer-events-none">
+          <div className="absolute inset-0 flex items-start md:items-center justify-center pt-24 md:pt-0 pointer-events-none">
             <div className="bg-black/80 text-white backdrop-blur-md px-6 py-3 rounded-full shadow-2xl flex items-center gap-3 animate-bounce">
               <span className="w-2.5 h-2.5 rounded-full bg-emerald-400 animate-ping" />
               <p className="text-sm font-bold">Estimating fares and distances...</p>
@@ -474,7 +478,7 @@ const Home = () => {
         )}
 
         {confirmRidePanelOpen && (
-          <div className="absolute inset-0 flex items-center justify-center pointer-events-none">
+          <div className="absolute inset-0 flex items-start md:items-center justify-center pt-24 md:pt-0 pointer-events-none">
             <div className="bg-black/80 text-white backdrop-blur-md px-6 py-3.5 rounded-full shadow-2xl flex items-center gap-3 animate-pulse border border-zinc-800">
               <span className="w-2.5 h-2.5 rounded-full bg-emerald-400 animate-ping" />
               <p className="text-sm font-bold">Broadcasting request to captains MH-04-CD-...</p>
@@ -483,7 +487,7 @@ const Home = () => {
         )}
 
         {waitingForDriver && assignedCaptain && (
-          <div className="absolute inset-0 flex items-center justify-center pointer-events-none">
+          <div className="absolute inset-0 flex items-start md:items-center justify-center pt-24 md:pt-0 pointer-events-none">
             <div className="bg-zinc-900/90 text-white border border-zinc-800 backdrop-blur-md px-6 py-4 rounded-2xl shadow-2xl flex flex-col items-center gap-2 max-w-sm">
               <div className="flex items-center gap-3">
                 <span className="w-3 h-3 rounded-full bg-emerald-400 animate-ping" />
@@ -495,7 +499,7 @@ const Home = () => {
         )}
 
         {rideStarted && assignedCaptain && (
-          <div className="absolute inset-0 flex items-center justify-center pointer-events-none">
+          <div className="absolute inset-0 flex items-start md:items-center justify-center pt-24 md:pt-0 pointer-events-none">
             <div className="bg-zinc-950/95 text-white border border-zinc-800 backdrop-blur-md px-8 py-5 rounded-3xl shadow-2xl flex flex-col items-center gap-2 max-w-md animate-fadeIn">
               <div className="flex items-center gap-3">
                 <span className="w-3.5 h-3.5 rounded-full bg-emerald-400 animate-pulse" />
@@ -512,7 +516,7 @@ const Home = () => {
         )}
 
         {rideCompleted && (
-          <div className="absolute inset-0 flex items-center justify-center pointer-events-none bg-black/10 backdrop-blur-[1px]">
+          <div className="absolute inset-0 flex items-start md:items-center justify-center pt-24 md:pt-0 pointer-events-none bg-black/10 backdrop-blur-[1px]">
             <div className="bg-white/95 text-zinc-900 border border-gray-200 px-8 py-6 rounded-3xl shadow-2xl flex flex-col items-center gap-3 max-w-sm text-center">
               <div className="w-12 h-12 bg-emerald-100 rounded-full flex items-center justify-center text-emerald-600 border border-emerald-200">
                 <svg className="w-6 h-6" fill="none" stroke="currentColor" strokeWidth="2.5" viewBox="0 0 24 24">

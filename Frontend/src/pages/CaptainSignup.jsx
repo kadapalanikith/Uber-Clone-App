@@ -67,7 +67,7 @@ const CaptainSignup = () => {
 
   return (
     <div className="min-h-screen bg-zinc-950 flex items-center justify-center p-4 sm:p-6 md:p-8 font-sans">
-      <div className="bg-zinc-900 text-white rounded-2xl shadow-2xl w-full max-w-md p-6 sm:p-8 flex flex-col justify-between min-h-[600px] border border-zinc-800">
+      <div className="bg-zinc-900 text-white rounded-2xl shadow-2xl w-full max-w-md p-5 sm:p-8 flex flex-col justify-between min-h-[520px] sm:min-h-[600px] border border-zinc-800">
         <div>
           <div className="flex items-center gap-2 mb-6">
             <img
