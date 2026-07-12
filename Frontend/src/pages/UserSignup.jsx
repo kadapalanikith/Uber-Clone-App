@@ -33,6 +33,10 @@ const UserSignup = () => {
         const data = response.data;
         setUserData(data.user);
         localStorage.setItem("user_token", data.token);
+        setFirstName("");
+        setLastName("");
+        setEmail("");
+        setPassword("");
         navigate("/home");
       }
     } catch (err) {
@@ -43,11 +47,6 @@ const UserSignup = () => {
         setError(err.response?.data?.message || "Registration failed. Try again.");
       }
     }
-
-    setFirstName("");
-    setLastName("");
-    setEmail("");
-    setPassword("");
   };
 
   return (

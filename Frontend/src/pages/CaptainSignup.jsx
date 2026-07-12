@@ -44,6 +44,14 @@ const CaptainSignup = () => {
         const data = response.data;
         setCaptainData(data.captain);
         localStorage.setItem("captain_token", data.token);
+        setFirstName("");
+        setLastName("");
+        setEmail("");
+        setPassword("");
+        setVehicleColor("");
+        setVehiclePlate("");
+        setVehicleCapacity("");
+        setVehicleType("");
         navigate("/captain-home");
       }
     } catch (err) {
@@ -54,15 +62,6 @@ const CaptainSignup = () => {
         setError(err.response?.data?.message || "Registration failed. Try again.");
       }
     }
-
-    setFirstName("");
-    setLastName("");
-    setEmail("");
-    setPassword("");
-    setVehicleColor("");
-    setVehiclePlate("");
-    setVehicleCapacity("");
-    setVehicleType("");
   };
 
   return (

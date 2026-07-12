@@ -9,17 +9,20 @@ const CaptainSignin = () => {
   const [error, setError] = useState("");
 
   const navigate = useNavigate();
-  const { captainData, setCaptainData } = useContext(CaptainDataContext);
+  const { setCaptainData } = useContext(CaptainDataContext);
 
   const submitHandler = async (e) => {
     e.preventDefault();
     setError("");
 
     try {
-      const response = await axios.post(`${import.meta.env.VITE_BASE_URL}/captains/login`, {
-        email: email,
-        password: password,
-      });
+      const response = await axios.post(
+        `${import.meta.env.VITE_BASE_URL}/captains/login`,
+        {
+          email: email,
+          password: password,
+        }
+      );
 
       if (response.status === 200) {
         const data = response.data;
@@ -28,11 +31,10 @@ const CaptainSignin = () => {
         navigate("/captain-home");
       }
     } catch (err) {
-      setError(err.response?.data?.message || "Login failed. Invalid email or password.");
+      setError(
+        err.response?.data?.message || "Login failed. Invalid email or password."
+      );
     }
-
-    setEmail("");
-    setPassword("");
   };
 
   return (
@@ -49,10 +51,10 @@ const CaptainSignin = () => {
               CAPTAIN
             </span>
           </div>
-          
+
           <form onSubmit={submitHandler} className="space-y-4">
             <div>
-              <h3 className="text-base font-semibold text-zinc-300 mb-1.5">What's your email?</h3>
+              <h3 className="text-base font-semibold text-zinc-300 mb-1.5 font-sans">What's your email?</h3>
               <input
                 required
                 value={email}
@@ -64,7 +66,7 @@ const CaptainSignin = () => {
             </div>
 
             <div>
-              <h3 className="text-base font-semibold text-zinc-300 mb-1.5">Enter Password</h3>
+              <h3 className="text-base font-semibold text-zinc-300 mb-1.5 font-sans">Enter Password</h3>
               <input
                 required
                 value={password}
@@ -75,13 +77,13 @@ const CaptainSignin = () => {
               />
             </div>
 
-            {error && <p className="text-red-400 text-sm mt-1 text-center font-medium">{error}</p>}
-            <button className="bg-white text-zinc-950 font-bold rounded-lg px-4 py-3 w-full text-base hover:bg-zinc-100 transition duration-200 cursor-pointer shadow-md mt-4">
-              Login
+            {error && <p className="text-red-400 text-sm mt-1 text-center font-medium font-sans">{error}</p>}
+            <button className="bg-white text-zinc-950 font-bold rounded-lg px-4 py-3 w-full text-base hover:bg-zinc-100 transition duration-200 cursor-pointer shadow-md mt-4 font-sans">
+              Login as Captain
             </button>
           </form>
-          <p className="text-center text-sm text-zinc-400 mt-6">
-            Join as a partner?{" "}
+          <p className="text-center text-sm text-zinc-400 mt-6 font-sans">
+            Want to join?{" "}
             <Link to="/captainsignup" className="text-emerald-400 font-semibold hover:underline">
               Register as a Captain
             </Link>
@@ -90,7 +92,7 @@ const CaptainSignin = () => {
         <div className="mt-8 border-t border-zinc-800 pt-6">
           <Link
             to="/login"
-            className="bg-[#d5622d] text-white flex items-center justify-center font-bold rounded-lg px-4 py-3 w-full text-base hover:bg-[#c25325] transition duration-200 shadow-sm"
+            className="bg-zinc-800 text-white flex items-center justify-center font-bold rounded-lg px-4 py-3 w-full text-base hover:bg-zinc-750 transition duration-200 shadow-sm border border-zinc-700 font-sans"
           >
             Sign in as User
           </Link>

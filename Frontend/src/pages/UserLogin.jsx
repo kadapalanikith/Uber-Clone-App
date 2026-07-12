@@ -25,14 +25,14 @@ const UserLogin = () => {
         const data = response.data;
         setUserData(data.user);
         localStorage.setItem("user_token", data.token);
+        setEmail("");
+        setPassword("");
         navigate("/home");
       }
     } catch (err) {
       setError(err.response?.data?.message || "Login failed. Invalid email or password.");
+      setPassword("");
     }
-
-    setEmail("");
-    setPassword("");
   };
 
   return (
