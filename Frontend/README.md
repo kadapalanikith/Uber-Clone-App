@@ -1,4 +1,4 @@
-# Uber Clone App - Frontend
+# 🎨 Uber Clone App - Frontend Documentation
 
 [![React](https://img.shields.io/badge/React-19.2.7-61DAFB?logo=react&logoColor=white&style=flat-square)](https://react.dev/)
 [![Vite](https://img.shields.io/badge/Vite-8.1.0-646CFF?logo=vite&logoColor=white&style=flat-square)](https://vite.dev/)
@@ -6,148 +6,132 @@
 [![React Router](https://img.shields.io/badge/React_Router-7.18.0-CA4245?logo=react-router&logoColor=white&style=flat-square)](https://reactrouter.com/)
 [![Oxlint](https://img.shields.io/badge/Linter-Oxlint-F43F5E?style=flat-square)](https://oxc.rs/)
 
-Welcome to the frontend of the **Uber Clone App**, a modern, high-performance web application designed to replicate the core user and captain flows of Uber. This client-side application is built using a cutting-edge frontend stack featuring **React 19**, **Vite 8**, **Tailwind CSS v4**, and **React Router v7**.
+Welcome to the frontend documentation of the **Uber Clone App**. This is a modern, high-performance web application designed to replicate core rider and captain (driver) flows. It is powered by **React 19**, **Vite 8**, **Tailwind CSS v4**, and **React Router v7**.
 
 ---
 
-## 🚀 Tech Stack & Tools
+## 🚀 Technology Stack
 
-- **Core Library:** [React 19](https://react.dev/) (Hooks, Functional Components)
-- **Build Tool:** [Vite 8](https://vite.dev/) (Lightning-fast HMR and bundling)
-- **Styling:** [Tailwind CSS v4](https://tailwindcss.com/) (Utility-first CSS framework with native CSS variables)
-- **Routing:** [React Router v7](https://reactrouter.com/) (Declarative client-side routing)
-- **Code Quality:** [Oxlint](https://oxc.rs/) (Extremely fast JavaScript/TypeScript linter)
+*   **Core Library:** [React 19](https://react.dev/) (Hooks, context-based architecture)
+*   **Build & HMR:** [Vite 8](https://vite.dev/) (Ultra-fast developer experience)
+*   **Styling:** [Tailwind CSS v4](https://tailwindcss.com/) (New high-speed CSS compiler with `@theme` configurations)
+*   **Routing:** [React Router v7](https://reactrouter.com/) (Declarative, nested router)
+*   **Code Verification:** [Oxlint](https://oxc.rs/) (Lightning-fast JavaScript/JSX syntax checks)
 
 ---
 
-## 📂 Directory Structure
+## 📂 Project Directory Structure
 
 ```text
 Frontend/
 ├── src/
-│   ├── context/         # React Context API providers
-│   │   ├── CaptainContext.jsx # State management for captain/driver data
-│   │   └── UserContext.jsx    # State management for user/rider data
-│   ├── pages/           # Page-level components
-│   │   ├── Start.jsx          # Welcome/Initial landing page
-│   │   ├── Home.jsx           # Rider dashboard/home page
-│   │   ├── UserLogin.jsx      # Rider login portal
-│   │   ├── UserSignup.jsx     # Rider registration portal
-│   │   ├── CaptainHome.jsx    # Driver/Captain dashboard/home page
-│   │   ├── CaptainSignin.jsx  # Driver/Captain login portal
-│   │   ├── CaptainSignup.jsx  # Driver/Captain registration portal
-│   │   ├── UserLogout.jsx     # Rider logout page/flow
-│   │   ├── UserProtectWrapper.jsx # Route protection for riders
-│   │   └── CaptainProtectWrapper.jsx # Route protection for captains
-│   ├── App.css          # Core layouts and layout configurations
-│   ├── App.jsx          # Routes definition and main component
-│   ├── index.css        # Tailwind CSS imports & directives
-│   └── main.jsx         # React application mounting point
-├── .env                 # Environment variables config (local API URL configuration)
-├── .gitignore           # Git ignore patterns
-├── .oxlintrc.json       # Linter rule definitions (Oxlint config)
-├── index.html           # Main template file
-├── package.json         # Project scripts, tools and dependencies
-└── vite.config.js       # Vite build configurations
+│   ├── context/                   # React Context global state providers
+│   │   ├── CaptainContext.jsx     # State manager for authenticated captain/driver data
+│   │   └── UserContext.jsx        # State manager for authenticated user/rider data
+│   ├── pages/                     # Routed views and wrap-guards
+│   │   ├── Start.jsx              # Welcome & Landing view (select user mode)
+│   │   ├── Home.jsx               # User/Rider dashboard & session view
+│   │   ├── UserLogin.jsx          # Rider sign-in portal
+│   │   ├── UserSignup.jsx         # Rider registration portal
+│   │   ├── UserLogout.jsx         # Rider session termination logic
+│   │   ├── CaptainHome.jsx        # Driver/Captain dashboard view
+│   │   ├── CaptainSignin.jsx      # Driver/Captain sign-in portal
+│   │   ├── CaptainSignup.jsx      # Driver/Captain registration portal
+│   │   ├── CaptainLogout.jsx      # Driver/Captain session termination logic
+│   │   ├── CaptainLogin.jsx       # [DEPRECATED] Forwards to CaptainSignin.jsx
+│   │   ├── Riding.jsx             # [PLACEHOLDER] Ride navigation view
+│   │   ├── UserProtectWrapper.jsx # Middleware check protecting user routes
+│   │   └── CaptainProtectWrapper.jsx # Middleware check protecting captain routes
+│   ├── App.css                    # Shared CSS layout helpers
+│   ├── App.jsx                    # Routing configuration definitions
+│   ├── index.css                  # Tailwind directive imports & theme variables
+│   └── main.jsx                   # React Virtual DOM mounting point
+├── .env                           # Local environment configuration file
+├── .gitignore                     # Git untracked registry rules
+├── .oxlintrc.json                 # Oxlint configuration schema
+├── index.html                     # Root DOM container template
+├── package.json                   # App scripts and project dependencies
+└── vite.config.js                 # Vite compilation configs
 ```
 
 ---
 
-## 🛣️ Application Routing
+## 🛣️ Application Routes & Layout Registry
 
-The application uses **React Router v7** for declarative client-side routing. Below are the registered paths and their corresponding page views:
+The following paths are defined in [App.jsx](file:///d:/Uber%20Clone%20App/Frontend/src/App.jsx):
 
-| Route Path | Page Component | Description |
-| :--- | :--- | :--- |
-| `/` | `Start` | Welcome page offering options to choose between Rider (User) or Captain. |
-| `/login` | `UserLogin` | Login portal for Riders (Users). |
-| `/signup` | `UserSignup` | Registration portal for new Riders. |
-| `/captainlogin` | `CaptainSignin` | Login portal for Drivers (Captains). |
-| `/captainsignup` | `CaptainSignup` | Registration portal for new Drivers. |
-| `/home` | `Home` | Rider dashboard/home page (restricted user area). |
-| `/captain-home` | `CaptainHome` | Captain dashboard/home page (restricted driver area). |
-| `/user/logout` | `UserLogout` | Logout logic for Riders (Users). |
-
----
-
-## 🧠 State Management & React Context
-
-The application utilizes React Context API to manage shared user and captain authentication states globally:
-
-1. **UserContext ([UserContext.jsx](file:///d:/Uber%20Clone%20App/Frontend/src/context/UserContext.jsx)):**
-   - Context Provider: `UserDataContext`
-   - State managed: `userData` containing rider's email and full name.
-2. **CaptainContext ([CaptainContext.jsx](file:///d:/Uber%20Clone%20App/Frontend/src/context/CaptainContext.jsx)):**
-   - Context Provider: `CaptainDataContext`
-   - State managed: `captainData` containing captain's email, full name, and vehicle details (color, plate, capacity, vehicleType).
-
-These contexts wrap the app tree to ensure authentication and profile info persist correctly across navigation.
+| Path | Component | Guard / Access Level | Description |
+| :--- | :--- | :--- | :--- |
+| `/` | `Start` | Public | Home landing selector screen. |
+| `/login` | `UserLogin` | Public | Rider sign-in credentials check. |
+| `/signup` | `UserSignup` | Public | Rider account registration. |
+| `/captainlogin` | `CaptainSignin` | Public | Driver sign-in credentials check. |
+| `/captainsignup` | `CaptainSignup` | Public | Driver/Captain account registration. |
+| `/home` | `Home` | `UserProtectWrapper` | Rider interactive dashboard portal. |
+| `/captain-home` | `CaptainHome` | `CaptainProtectWrapper` | Driver interactive workspace portal. |
+| `/user/logout` | `UserLogout` | `UserProtectWrapper` | Logs out rider and redirect to login. |
+| `/captain/logout` | `CaptainLogout` | `CaptainProtectWrapper` | Logs out driver and redirect to sign-in. |
 
 ---
 
-## 🔧 Getting Started
+## 🧠 State Management with Context API
 
-### Prerequisites
+State is split cleanly across two main domains to prevent re-render cascading:
 
-Ensure you have the following installed on your local machine:
-- [Node.js](https://nodejs.org/) (v18 or higher recommended)
-- [npm](https://www.npmjs.com/) (Node Package Manager)
+### 1. User Context
+*   **Provider:** `UserDataContext` in [UserContext.jsx](file:///d:/Uber%20Clone%20App/Frontend/src/context/UserContext.jsx)
+*   **State:** `userData` storing:
+    ```json
+    {
+      "fullName": {
+        "firstName": "John",
+        "lastName": "Doe"
+      },
+      "email": "john@example.com"
+    }
+    ```
 
-### Installation
-
-1. Navigate to the frontend directory:
-   ```bash
-   cd Frontend
-   ```
-
-2. Install the dependencies:
-   ```bash
-   npm install
-   ```
-
-### Running the Application
-
-* **Development Mode (with HMR):**
-  ```bash
-  npm run dev
-  ```
-  The app will run locally at `http://localhost:5173` (or the next available port).
-
-* **Production Build:**
-  Generate a highly optimized production bundle in the `dist/` directory:
-  ```bash
-  npm run build
-  ```
-
-* **Preview Production Build:**
-  Locally preview the production build to verify behavior before deploying:
-  ```bash
-  npm run preview
-  ```
-
-* **Linting:**
-  Run the ultra-fast Oxlint linter to check for code issues:
-  ```bash
-  npm run lint
-  ```
+### 2. Captain Context
+*   **Provider:** `CaptainDataContext` in [CaptainContext.jsx](file:///d:/Uber%20Clone%20App/Frontend/src/context/CaptainContext.jsx)
+*   **State:** `captainData` storing driver bio, rating, and vehicle specifications:
+    ```json
+    {
+      "fullName": {
+        "firstName": "Jane",
+        "lastName": "Smith"
+      },
+      "email": "jane@example.com",
+      "vehicle": {
+        "color": "matte black",
+        "plate": "CA-99X-777",
+        "capacity": 4,
+        "vehicleType": "car"
+      }
+    }
+    ```
 
 ---
 
-## 🔌 Connecting to the Backend API
+## ⚙️ Build and Execution Commands
 
-To connect this frontend to the companion Express backend:
-1. Create a `.env` file in the `Frontend/` root directory (if not already present).
-2. Add the backend API base URL:
-   ```env
-   VITE_BASE_URL=http://localhost:4000
-   ```
-3. Utilize `import.meta.env.VITE_BASE_URL` when making `fetch` or `axios` requests.
+Inside the `/Frontend` directory, run:
 
----
+### Development Run (HMR)
+```bash
+npm run dev
+```
 
-## 🎨 Styling with Tailwind CSS v4
+### Fast Lint Check
+```bash
+npm run lint
+```
 
-This project utilizes the brand new **Tailwind CSS v4.0** engine, which integrates directly with Vite via `@tailwindcss/vite`. Key highlights:
-- Faster build times and smaller bundle sizes.
-- Styles are configured in CSS using `@theme` instead of a separate `tailwind.config.js` file.
-- Global styles and custom utilities reside in [src/index.css](file:///d:/Uber%20Clone%20App/Frontend/src/index.css).
+### Production Build
+```bash
+npm run build
+```
+
+### Local Preview of Production Bundle
+```bash
+npm run preview
+```

@@ -1,194 +1,320 @@
-# Backend API Documentation
+# 🛠️ Uber Clone - Backend API Documentation
 
-## `/users/register` Endpoint
-
-### Description
-Registers a new user by creating a user account with the provided information.
-
-### HTTP Method
-`POST`
-
-### Request Body
-The request body should be in JSON format and include the following fields:
-
-- **fullname** (object):
-  - **firstname** (string, required): User's first name (minimum 3 characters).
-  - **lastname** (string, optional): User's last name (minimum 3 characters).
-- **email** (string, required): User's email address (must be a valid email).
-- **password** (string, required): User's password (minimum 6 characters).
-
-### Example Response
-- **user** (object):
-  - **fullname** (object):
-    - **firstname** (string): User's first name (minimum 3 characters).
-    - **lastname** (string): User's last name (minimum 3 characters).
-  - **email** (string): User's email address (must be a valid email).
-  - **password** (string): User's password (minimum 6 characters).
-- **token** (String): JWT Token
+Welcome to the **Express.js API Backend** documentation for the Uber Clone App. This service provides endpoints for user and captain authentication, profiles, session management, and JWT validation.
 
 ---
 
-## `/users/login` Endpoint
+## 🔒 Authentication & Headers
 
-### Description
-Authenticates a user using their email and password, returning a JWT token upon successful login.
+Most protected endpoints require authorization. The JWT must be supplied either via an HTTP cookie named `token` or through the `Authorization` header.
 
-### HTTP Method
-`POST`
-
-### Request Body
-The request body should be in JSON format and include the following fields:
-
-- **email** (string, required): User's email address (must be a valid email).
-- **password** (string, required): User's password (minimum 6 characters).
-
-### Example Response
-- **user** (object):
-  - **fullname** (object):
-    - **firstname** (string): User's first name (minimum 3 characters).
-    - **lastname** (string): User's last name (minimum 3 characters).
-  - **email** (string): User's email address (must be a valid email).
-- **token** (String): JWT Token
+> [!IMPORTANT]
+> When using the `Authorization` header, the format must strictly follow:
+> `Authorization: Bearer <JWT_TOKEN>`
 
 ---
 
-## `/users/profile` Endpoint
+## 👤 User Endpoints
 
-### Description
-Retrieves the profile of the currently authenticated user.
+### 1. Register User
 
-### HTTP Method
-`GET`
+Create a new user/rider account.
 
-### Headers
-- **Authorization** (string, required): `Bearer <token>`
+*   **Endpoint:** `/users/register`
+*   **Method:** `POST`
+*   **Access:** Public
 
-### Example Response
-- **user** (object):
-  - **fullname** (object):
-    - **firstname** (string): User's first name.
-    - **lastname** (string): User's last name.
-  - **email** (string): User's email address.
+#### 📥 Request Body
 
----
+| Field | Type | Required | Description |
+| :--- | :--- | :--- | :--- |
+| `fullname` | `Object` | Yes | Parent container for names. |
+| `fullname.firstname` | `String` | Yes | First name (minimum 3 characters). |
+| `fullname.lastname` | `String` | No | Last name (minimum 3 characters). |
+| `email` | `String` | Yes | Must be a unique, valid email address. |
+| `password` | `String` | Yes | Account password (minimum 6 characters). |
 
-## `/users/logout` Endpoint
+```json
+{
+  "fullname": {
+    "firstname": "John",
+    "lastname": "Doe"
+  },
+  "email": "john.doe@example.com",
+  "password": "securepassword123"
+}
+```
 
-### Description
-Logs out the user by blacklisting their active JWT token.
+#### 📤 Response (`201 Created`)
 
-### HTTP Method
-`POST`
-
-### Headers
-- **Authorization** (string, required): `Bearer <token>`
-
-### Example Response
-- **message** (string): "Logged out successfully"
-
----
-
-## `/captains/register` Endpoint
-
-### Description
-Registers a new captain (driver) account with their vehicle specifications.
-
-### HTTP Method
-`POST`
-
-### Request Body
-The request body should be in JSON format and include the following fields:
-
-- **fullname** (object):
-  - **firstname** (string, required): Captain's first name (minimum 3 characters).
-  - **lastname** (string, optional): Captain's last name (minimum 3 characters).
-- **email** (string, required): Captain's email address (must be a valid email).
-- **password** (string, required): Captain's password (minimum 6 characters).
-- **vehicle** (object):
-  - **color** (string, required): Vehicle color (minimum 3 characters).
-  - **plate** (string, required): License plate number (minimum 3 characters).
-  - **capacity** (number, required): Passenger capacity (minimum 1).
-  - **vehicleType** (string, required): Type of vehicle (must be `car`, `motorcycle`, or `auto`).
-
-### Example Response
-- **captain** (object):
-  - **fullname** (object):
-    - **firstname** (string): Captain's first name.
-    - **lastname** (string): Captain's last name.
-  - **email** (string): Captain's email address.
-  - **vehicle** (object):
-    - **color** (string): Vehicle color.
-    - **plate** (string): License plate number.
-    - **capacity** (number): Passenger capacity.
-    - **vehicleType** (string): Type of vehicle.
-- **token** (String): JWT Token
+```json
+{
+  "token": "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9...",
+  "user": {
+    "_id": "60c72b2f9b1d8e0015cf0001",
+    "fullName": {
+      "firstName": "John",
+      "lastName": "Doe"
+    },
+    "email": "john.doe@example.com",
+    "socketId": null
+  }
+}
+```
 
 ---
 
-## `/captains/login` Endpoint
+### 2. Login User
 
-### Description
-Authenticates a captain using their email and password, returning a JWT token upon successful login.
+Authenticate an existing user.
 
-### HTTP Method
-`POST`
+*   **Endpoint:** `/users/login`
+*   **Method:** `POST`
+*   **Access:** Public
 
-### Request Body
-The request body should be in JSON format and include the following fields:
+#### 📥 Request Body
 
-- **email** (string, required): Captain's email address (must be a valid email).
-- **password** (string, required): Captain's password (minimum 6 characters).
+```json
+{
+  "email": "john.doe@example.com",
+  "password": "securepassword123"
+}
+```
 
-### Example Response
-- **captain** (object):
-  - **fullname** (object):
-    - **firstname** (string): Captain's first name.
-    - **lastname** (string): Captain's last name.
-  - **email** (string): Captain's email address.
-  - **vehicle** (object):
-    - **color** (string): Vehicle color.
-    - **plate** (string): License plate number.
-    - **capacity** (number): Passenger capacity.
-    - **vehicleType** (string): Type of vehicle.
-- **token** (String): JWT Token
+#### 📤 Response (`200 OK`)
 
----
+Sets a cookie `token` and returns:
 
-## `/captains/profile` Endpoint
-
-### Description
-Retrieves the profile of the currently authenticated captain.
-
-### HTTP Method
-`GET`
-
-### Headers
-- **Authorization** (string, required): `Bearer <token>`
-
-### Example Response
-- **captain** (object):
-  - **fullname** (object):
-    - **firstname** (string): Captain's first name.
-    - **lastname** (string): Captain's last name.
-  - **email** (string): Captain's email address.
-  - **vehicle** (object):
-    - **color** (string): Vehicle color.
-    - **plate** (string): License plate.
-    - **capacity** (number): Passenger capacity.
-    - **vehicleType** (string): Vehicle type.
+```json
+{
+  "token": "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9...",
+  "user": {
+    "_id": "60c72b2f9b1d8e0015cf0001",
+    "fullName": {
+      "firstName": "John",
+      "lastName": "Doe"
+    },
+    "email": "john.doe@example.com",
+    "socketId": null
+  }
+}
+```
 
 ---
 
-## `/captains/logout` Endpoint
+### 3. Get User Profile
 
-### Description
-Logs out the captain by blacklisting their active JWT token.
+Retrieve the currently authenticated user's details.
 
-### HTTP Method
-`GET`
+*   **Endpoint:** `/users/profile`
+*   **Method:** `GET`
+*   **Access:** Protected (requires user token)
 
-### Headers
-- **Authorization** (string, required): `Bearer <token>`
+#### 📤 Response (`200 OK`)
 
-### Example Response
-- **message** (string): "Logged out successfully"
+```json
+{
+  "user": {
+    "_id": "60c72b2f9b1d8e0015cf0001",
+    "fullName": {
+      "firstName": "John",
+      "lastName": "Doe"
+    },
+    "email": "john.doe@example.com",
+    "socketId": null
+  }
+}
+```
+
+---
+
+### 4. Logout User
+
+Blacklist the user's active session token and clear the local auth cookie.
+
+*   **Endpoint:** `/users/logout`
+*   **Method:** `POST`
+*   **Access:** Protected (requires user token)
+
+#### 📤 Response (`200 OK`)
+
+```json
+{
+  "message": "Logged out successfully"
+}
+```
+
+---
+
+## 🚕 Captain (Driver) Endpoints
+
+### 1. Register Captain
+
+Create a new driver profile with vehicle specifications.
+
+*   **Endpoint:** `/captains/register`
+*   **Method:** `POST`
+*   **Access:** Public
+
+#### 📥 Request Body
+
+| Field | Type | Required | Description |
+| :--- | :--- | :--- | :--- |
+| `fullname` | `Object` | Yes | Parent container for names. |
+| `fullname.firstname` | `String` | Yes | First name (minimum 3 characters). |
+| `fullname.lastname` | `String` | No | Last name (minimum 3 characters). |
+| `email` | `String` | Yes | Must be a unique, valid email address. |
+| `password` | `String` | Yes | Account password (minimum 6 characters). |
+| `vehicle` | `Object` | Yes | Parent container for vehicle specs. |
+| `vehicle.color` | `String` | Yes | Vehicle exterior color (minimum 3 characters). |
+| `vehicle.plate` | `String` | Yes | License plate identifier (minimum 3 characters). |
+| `vehicle.capacity` | `Number` | Yes | Passenger capability (minimum 1). |
+| `vehicle.vehicleType` | `String` | Yes | Must be one of: `car`, `motorcycle`, or `auto`. |
+
+```json
+{
+  "fullname": {
+    "firstname": "Jane",
+    "lastname": "Smith"
+  },
+  "email": "jane.smith@example.com",
+  "password": "securecaptain456",
+  "vehicle": {
+    "color": "matte black",
+    "plate": "CA-99X-777",
+    "capacity": 4,
+    "vehicleType": "car"
+  }
+}
+```
+
+#### 📤 Response (`201 Created`)
+
+```json
+{
+  "token": "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9...",
+  "captain": {
+    "_id": "60c72b2f9b1d8e0015cf9999",
+    "fullName": {
+      "firstName": "Jane",
+      "lastName": "Smith"
+    },
+    "email": "jane.smith@example.com",
+    "status": "inactive",
+    "vehicle": {
+      "color": "matte black",
+      "plate": "CA-99X-777",
+      "capacity": 4,
+      "vehicleType": "car"
+    },
+    "location": {
+      "lat": null,
+      "lng": null
+    }
+  }
+}
+```
+
+---
+
+### 2. Login Captain
+
+Authenticate an existing driver.
+
+*   **Endpoint:** `/captains/login`
+*   **Method:** `POST`
+*   **Access:** Public
+
+#### 📥 Request Body
+
+```json
+{
+  "email": "jane.smith@example.com",
+  "password": "securecaptain456"
+}
+```
+
+#### 📤 Response (`200 OK`)
+
+Sets a cookie `token` and returns:
+
+```json
+{
+  "token": "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9...",
+  "captain": {
+    "_id": "60c72b2f9b1d8e0015cf9999",
+    "fullName": {
+      "firstName": "Jane",
+      "lastName": "Smith"
+    },
+    "email": "jane.smith@example.com",
+    "status": "inactive",
+    "vehicle": {
+      "color": "matte black",
+      "plate": "CA-99X-777",
+      "capacity": 4,
+      "vehicleType": "car"
+    }
+  }
+}
+```
+
+---
+
+### 3. Get Captain Profile
+
+Retrieve the currently authenticated captain's details.
+
+*   **Endpoint:** `/captains/profile`
+*   **Method:** `GET`
+*   **Access:** Protected (requires captain token)
+
+#### 📤 Response (`200 OK`)
+
+```json
+{
+  "captain": {
+    "_id": "60c72b2f9b1d8e0015cf9999",
+    "fullName": {
+      "firstName": "Jane",
+      "lastName": "Smith"
+    },
+    "email": "jane.smith@example.com",
+    "status": "inactive",
+    "vehicle": {
+      "color": "matte black",
+      "plate": "CA-99X-777",
+      "capacity": 4,
+      "vehicleType": "car"
+    }
+  }
+}
+```
+
+---
+
+### 4. Logout Captain
+
+Blacklist the captain's active session token and clear the local auth cookie.
+
+*   **Endpoint:** `/captains/logout`
+*   **Method:** `GET`
+*   **Access:** Protected (requires captain token)
+
+#### 📤 Response (`200 OK`)
+
+```json
+{
+  "message": "Logged out successfully"
+}
+```
+
+---
+
+## 🛡️ Errors & Status Codes
+
+The API returns standard HTTP status codes along with a JSON response containing context when requests fail:
+
+*   `400 Bad Request`: Validation errors or payload issues.
+*   `401 Unauthorized`: Missing, expired, or blacklisted token.
+*   `500 Internal Server Error`: Server-side errors.
