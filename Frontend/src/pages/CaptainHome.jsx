@@ -2,6 +2,8 @@ import React, { useEffect, useState, useContext } from "react";
 import { useNavigate } from "react-router-dom";
 import axios from "axios";
 import { CaptainDataContext } from "../context/CaptainContext";
+import CaptainDetails from "../components/CaptainDetails";
+import RidePopUp from "../components/RidePopUp";
 
 const CaptainHome = () => {
   const navigate = useNavigate();
@@ -105,46 +107,10 @@ const CaptainHome = () => {
             </button>
           </div>
 
-          {/* Captain Info */}
-          {captainData?.fullName?.firstName && (
-            <div className="mb-6 p-4 rounded-xl bg-zinc-800 border border-zinc-700 flex justify-between items-center">
-              <div>
-                <p className="text-xs text-zinc-400">Driver Partner</p>
-                <h2 className="text-lg font-bold text-white">
-                  {captainData.fullName.firstName} {captainData.fullName.lastName}
-                </h2>
-              </div>
-              <div className="flex flex-col items-end">
-                <span className="text-xs text-zinc-400">Rating</span>
-                <span className="text-sm font-bold text-amber-400">★ 4.95</span>
-              </div>
-            </div>
-          )}
-
-          {/* Vehicle Info */}
-          {captainData?.vehicle?.plate && (
-            <div className="mb-6 p-4 rounded-xl bg-zinc-900 border border-zinc-800 space-y-2">
-              <p className="text-xs text-zinc-400 uppercase tracking-wider font-bold">Vehicle Details</p>
-              <div className="grid grid-cols-2 gap-2 text-sm text-zinc-300">
-                <div>
-                  <span className="text-zinc-500 block text-xs">Vehicle Type</span>
-                  <span className="font-semibold uppercase">{captainData.vehicle.vehicleType}</span>
-                </div>
-                <div>
-                  <span className="text-zinc-500 block text-xs">License Plate</span>
-                  <span className="font-semibold uppercase">{captainData.vehicle.plate}</span>
-                </div>
-                <div>
-                  <span className="text-zinc-500 block text-xs">Color</span>
-                  <span className="font-semibold capitalize">{captainData.vehicle.color}</span>
-                </div>
-                <div>
-                  <span className="text-zinc-500 block text-xs">Capacity</span>
-                  <span className="font-semibold">{captainData.vehicle.capacity} Passengers</span>
-                </div>
-              </div>
-            </div>
-          )}
+          {/* Captain Details (Profile & Vehicle Info) */}
+          <div className="mb-6">
+            <CaptainDetails captainData={captainData} />
+          </div>
 
           {/* Status Toggle Card */}
           <div className="p-5 rounded-2xl bg-zinc-800/80 border border-zinc-700 flex justify-between items-center mb-6">
@@ -170,51 +136,12 @@ const CaptainHome = () => {
 
           {/* Incoming Ride Request Alert */}
           {isOnline && rideRequest && (
-            <div className="p-5 rounded-2xl bg-zinc-800 border-2 border-[#10b461] space-y-4 animate-pulse shadow-xl">
-              <div className="flex justify-between items-start">
-                <div>
-                  <span className="bg-[#10b461]/25 text-[#10b461] text-xs font-bold px-2 py-0.5 rounded">
-                    NEW REQUEST
-                  </span>
-                  <h4 className="font-bold text-lg mt-2 text-white">Ride Request</h4>
-                </div>
-                <div className="text-right">
-                  <span className="text-xs text-zinc-400 block">Est. Fare</span>
-                  <span className="text-xl font-black text-[#10b461]">${rideRequest.fare}</span>
-                </div>
-              </div>
-
-              <div className="space-y-2 border-y border-zinc-700 py-3 text-sm">
-                <div className="flex gap-2">
-                  <span className="text-emerald-400">●</span>
-                  <p className="text-zinc-300">
-                    <span className="text-zinc-500 text-xs block">Pickup</span>
-                    {rideRequest.pickup}
-                  </p>
-                </div>
-                <div className="flex gap-2">
-                  <span className="text-red-400">■</span>
-                  <p className="text-zinc-300">
-                    <span className="text-zinc-500 text-xs block">Drop</span>
-                    {rideRequest.destination}
-                  </p>
-                </div>
-              </div>
-
-              <div className="flex gap-3">
-                <button
-                  onClick={handleDeclineRide}
-                  className="w-1/3 bg-zinc-700 text-white font-semibold py-2.5 rounded-lg text-sm hover:bg-zinc-600 transition cursor-pointer"
-                >
-                  Decline
-                </button>
-                <button
-                  onClick={handleAcceptRide}
-                  className="flex-1 bg-[#10b461] text-white font-bold py-2.5 rounded-lg text-sm hover:bg-[#0d944f] transition cursor-pointer shadow-lg"
-                >
-                  Accept Ride
-                </button>
-              </div>
+            <div className="mb-6">
+              <RidePopUp
+                rideRequest={rideRequest}
+                handleAcceptRide={handleAcceptRide}
+                handleDeclineRide={handleDeclineRide}
+              />
             </div>
           )}
 
