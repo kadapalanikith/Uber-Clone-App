@@ -47,8 +47,8 @@ graph TD
 
 *   **[Backend](file:///d:/Uber%20Clone%20App/Backend/)**: Node.js & Express REST API handling authentication, validation, session revocation, and data persistence using Mongoose and MongoDB.
     *   *For full API documentation, payload schema, and endpoints, see the [Backend README](file:///d:/Uber%20Clone%20App/Backend/README.md).*
-*   **[Frontend](file:///d:/Uber%20Clone%20App/Frontend/)**: Single Page Application built using React 19, Vite 8, Tailwind CSS v4, and React Router v7.
-    *   *For route listings, wrappers, and context data schemas, see the [Frontend README](file:///d:/Uber%20Clone%20App/Frontend/README.md).*
+*   **[Frontend](file:///d:/Uber%20Clone%20App/Frontend/)**: Single Page Application built using React 19, Vite 8, Tailwind CSS v4, and React Router v7. Features fully interactive components like `CaptainDetails` and `RidePopUp` for driving simulations.
+    *   *For route listings, wrappers, context state structure, and component details, see the [Frontend README](file:///d:/Uber%20Clone%20App/Frontend/README.md).*
 
 ---
 

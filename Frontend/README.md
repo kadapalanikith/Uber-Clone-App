@@ -25,6 +25,14 @@ Welcome to the frontend documentation of the **Uber Clone App**. This is a moder
 ```text
 Frontend/
 ├── src/
+│   ├── components/                # Reusable UI component modules
+│   │   ├── CaptainDetails.jsx     # Captain bio, stats dashboard & vehicle specifications
+│   │   ├── ConfirmRide.jsx        # [PLACEHOLDER] Ride details verification
+│   │   ├── LocationSearchPanel.jsx# Pickup and drop-off search recommendations
+│   │   ├── LookingForDriver.jsx   # [PLACEHOLDER] Rider side seeking driver loader
+│   │   ├── RidePopUp.jsx          # Captain side incoming ride request modal
+│   │   ├── VehiclePanel.jsx       # Rider side vehicle option selector
+│   │   └── WaitingForDriver.jsx   # [PLACEHOLDER] Rider side assigned captain information
 │   ├── context/                   # React Context global state providers
 │   │   ├── CaptainContext.jsx     # State manager for authenticated captain/driver data
 │   │   └── UserContext.jsx        # State manager for authenticated user/rider data
@@ -71,6 +79,17 @@ The following paths are defined in [App.jsx](file:///d:/Uber%20Clone%20App/Front
 | `/captain-home` | `CaptainHome` | `CaptainProtectWrapper` | Driver interactive workspace portal. |
 | `/user/logout` | `UserLogout` | `UserProtectWrapper` | Logs out rider and redirect to login. |
 | `/captain/logout` | `CaptainLogout` | `CaptainProtectWrapper` | Logs out driver and redirect to sign-in. |
+
+---
+
+## 🧩 Reusable UI Components
+
+The application divides modular visual concerns into dedicated frontend components under `/src/components`:
+
+*   **[CaptainDetails](file:///d:/Uber%20Clone%20App/Frontend/src/components/CaptainDetails.jsx)**: Renders the active Captain profile card. Displays driver partner name, ratings, performance stats (Today's Earnings, Trips completed, Hours online), and vehicle specifications (vehicleType, license plate, color, capacity) in a beautiful dark theme.
+*   **[RidePopUp](file:///d:/Uber%20Clone%20App/Frontend/src/components/RidePopUp.jsx)**: Slides up when a new ride request is dispatched to an online Captain. Showcases passenger name, trip distance, fare estimate, and structured pickup/dropoff path markers. Contains accepting and declining callbacks.
+*   **[VehiclePanel](file:///d:/Uber%20Clone%20App/Frontend/src/components/VehiclePanel.jsx)**: Allows riders to select their vehicle of choice (UberGo car, Moto, or UberAuto) with real-time distance adjustments and calculated base fares.
+*   **[LocationSearchPanel](file:///d:/Uber%20Clone%20App/Frontend/src/components/LocationSearchPanel.jsx)**: Displays lookup recommendations for pickup/dropoff fields to streamline ride route selection.
 
 ---
 
